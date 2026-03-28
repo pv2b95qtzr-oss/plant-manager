@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>植物管理アプリ</title>
+  <title>植物管理アプリ v2</title>
   <style>
     :root{
       --bg:#f4f6f8;
@@ -15,117 +15,86 @@
       --green:#059669;
       --orange:#d97706;
       --red:#dc2626;
+      --purple:#7c3aed;
       --shadow:0 6px 18px rgba(15,23,42,.08);
       --radius:18px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP",sans-serif}
-    body{padding:16px;max-width:980px;margin:0 auto}
+    body{padding:16px;max-width:1080px;margin:0 auto}
     h1,h2,h3,p{margin:0}
-    .top{
-      display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;
-      margin-bottom:16px;
-    }
+    button,input,select,textarea{font:inherit}
+    .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px}
     .title{font-size:28px;font-weight:800;line-height:1.2}
     .sub{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.5}
-    .date-box{
-      background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
-      border-radius:var(--radius);padding:14px 16px;min-width:220px;
-    }
+    .date-box{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:14px 16px;min-width:220px}
     .date-box label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-    .date-box input{
-      width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;
-      background:#fff;
-    }
+    .date-box input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;background:#fff}
     .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-    .card{
-      background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);
-      padding:16px;
-    }
+    .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:16px}
     .stat-label{font-size:12px;color:var(--muted);margin-bottom:6px}
     .stat-value{font-size:32px;font-weight:800}
-    .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-    .tab-btn{
-      border:none;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);
-      border-radius:16px;padding:14px 10px;font-size:16px;font-weight:700;cursor:pointer;
-    }
+    .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+    .tab-btn{border:none;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:14px 10px;font-size:16px;font-weight:700;cursor:pointer}
     .tab-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-    .hidden{display:none}
+    .hidden{display:none !important}
     .section-title{font-size:20px;font-weight:800;margin-bottom:12px}
-    .toolbar{
-      display:grid;grid-template-columns:1.4fr 1fr auto auto;gap:10px;margin-bottom:14px;
-    }
-    .toolbar input,.toolbar select,.toolbar button,.plant-actions button,.plant-actions select,.plant-actions input,.bulk-row button,.top-actions button,.small-btn{
-      min-height:46px;border-radius:14px;font-size:16px;
-    }
-    input,select,textarea,button{
-      font:inherit;
-    }
-    input,select,textarea{
-      width:100%;padding:12px;border:1px solid var(--line);background:#fff;
-    }
-    button{
-      border:none;cursor:pointer;padding:12px 14px;
-    }
+    input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);background:#fff;border-radius:14px}
+    button{border:none;cursor:pointer;padding:12px 14px;border-radius:14px;min-height:46px}
     .primary{background:var(--blue);color:#fff}
     .secondary{background:#fff;border:1px solid var(--line)}
     .success{background:var(--green);color:#fff}
     .warning{background:var(--orange);color:#fff}
     .danger{background:var(--red);color:#fff}
+    .spray{background:var(--purple);color:#fff}
     .muted{color:var(--muted)}
+    .toolbar{display:grid;grid-template-columns:1.4fr 1fr auto auto;gap:10px;margin-bottom:14px}
+    .top-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
     .group-block{margin-top:18px}
-    .group-name{font-size:14px;font-weight:800;color:var(--muted);margin:0 0 8px 4px;text-transform:none}
+    .group-name{font-size:14px;font-weight:800;color:var(--muted);margin:0 0 8px 4px}
     .plant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .plant-card{
-      background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)
-    }
+    .plant-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
     .plant-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
     .plant-name{font-size:18px;font-weight:800;line-height:1.25}
-    .badge{
-      display:inline-flex;align-items:center;justify-content:center;
-      border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;white-space:nowrap
-    }
+    .badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;white-space:nowrap}
     .badge-due{background:#fee2e2;color:#991b1b}
     .badge-soon{background:#fef3c7;color:#92400e}
     .badge-wait{background:#e5e7eb;color:#374151}
+    .badge-spray{background:#ede9fe;color:#5b21b6}
     .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
     .meta-box{background:#f8fafc;border-radius:14px;padding:10px;font-size:13px;line-height:1.4}
     .meta-box b{display:block;font-size:15px;color:#111827;margin-top:3px}
     .btn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
     .btn-row button{font-weight:800}
-    .top-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-    .bulk-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
     .list-card{margin-bottom:12px}
     .list-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
     .rule{font-size:13px;color:var(--muted);margin-top:4px}
     .note{font-size:13px;color:#4b5563;margin-top:4px}
-    .plant-actions{
-      display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px
-    }
-    .check-row{display:flex;align-items:center;gap:10px;margin-top:10px}
-    .check-row input{width:auto;min-height:auto}
-    .log-item{
-      display:flex;justify-content:space-between;align-items:center;gap:10px;
-      padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:10px
-    }
+    .plant-actions{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}
+    .empty{background:#fff;border:1px dashed var(--line);border-radius:18px;padding:24px;text-align:center;color:var(--muted)}
+    .history-toolbar{display:grid;grid-template-columns:1fr 180px 180px auto;gap:10px;margin-bottom:12px}
+    .log-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:10px}
+    .log-actions{display:flex;gap:8px;flex-wrap:wrap}
     .small{font-size:13px;color:var(--muted)}
-    .add-box{
-      background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
-      padding:16px;margin-bottom:14px
-    }
-    .add-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;margin-bottom:10px}
+    .add-box{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+    .add-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px;margin-bottom:10px}
     .add-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .empty{
-      background:#fff;border:1px dashed var(--line);border-radius:18px;padding:24px;text-align:center;color:var(--muted)
-    }
+    .modal-wrap{position:fixed;inset:0;background:rgba(15,23,42,.38);display:none;align-items:flex-end;justify-content:center;padding:12px;z-index:50}
+    .modal-wrap.show{display:flex}
+    .modal{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px 24px 18px 18px;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:18px}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+    .modal-title{font-size:22px;font-weight:800}
+    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .footer-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+    .inline-link{background:none;border:none;padding:0;color:var(--blue);min-height:auto;border-radius:0}
+    .pill{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700}
     @media (max-width: 800px){
       .grid-4{grid-template-columns:repeat(2,1fr)}
-      .toolbar{grid-template-columns:1fr 1fr;gap:8px}
-      .plant-grid{grid-template-columns:1fr}
-      .top-actions,.bulk-row,.btn-row,.plant-actions,.add-grid,.add-grid-2{grid-template-columns:1fr}
       .tabs{grid-template-columns:repeat(2,1fr)}
+      .toolbar,.history-toolbar,.top-actions,.add-grid,.add-grid-2,.plant-grid,.meta,.btn-row,.plant-actions,.modal-grid{grid-template-columns:1fr}
       body{padding:12px}
       .title{font-size:24px}
+      .modal{padding:14px}
     }
   </style>
 </head>
@@ -133,7 +102,7 @@
   <div class="top">
     <div>
       <div class="title">植物管理アプリ</div>
-      <div class="sub">iPhoneで見やすい前提。今日の水やり候補、グループ管理、並び替え、記録を1つで管理。</div>
+      <div class="sub">水管理と薬剤散布を分けて管理。過去履歴の確認、あとから編集、株情報の編集に対応。</div>
     </div>
     <div class="date-box">
       <label>判定日</label>
@@ -142,29 +111,18 @@
   </div>
 
   <div class="grid-4">
-    <div class="card">
-      <div class="stat-label">今日やる株</div>
-      <div class="stat-value" id="statDue">0</div>
-    </div>
-    <div class="card">
-      <div class="stat-label">明日目安</div>
-      <div class="stat-value" id="statSoon">0</div>
-    </div>
-    <div class="card">
-      <div class="stat-label">登録株数</div>
-      <div class="stat-value" id="statCount">0</div>
-    </div>
-    <div class="card">
-      <div class="stat-label">記録数</div>
-      <div class="stat-value" id="statLogs">0</div>
-    </div>
+    <div class="card"><div class="stat-label">今日やる株</div><div class="stat-value" id="statDue">0</div></div>
+    <div class="card"><div class="stat-label">明日目安</div><div class="stat-value" id="statSoon">0</div></div>
+    <div class="card"><div class="stat-label">登録株数</div><div class="stat-value" id="statCount">0</div></div>
+    <div class="card"><div class="stat-label">履歴合計</div><div class="stat-value" id="statLogs">0</div></div>
   </div>
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="today">今日の管理</button>
     <button class="tab-btn" data-tab="plants">植物一覧</button>
+    <button class="tab-btn" data-tab="water-history">水履歴</button>
+    <button class="tab-btn" data-tab="spray-history">薬剤履歴</button>
     <button class="tab-btn" data-tab="groups">グループ</button>
-    <button class="tab-btn" data-tab="logs">履歴</button>
   </div>
 
   <section id="tab-today">
@@ -191,9 +149,7 @@
         <input id="newRule" placeholder="ルールメモ 例: 5日目安" />
         <input id="newNote" placeholder="補足メモ" />
       </div>
-      <div style="margin-top:10px;">
-        <button class="primary" id="addPlantBtn">追加する</button>
-      </div>
+      <div style="margin-top:10px;"><button class="primary" id="addPlantBtn">追加する</button></div>
     </div>
 
     <div class="card">
@@ -201,8 +157,8 @@
       <div class="toolbar">
         <input id="searchInput" placeholder="株名・ルール・メモ検索" />
         <select id="groupFilter"></select>
-        <label class="check-row" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 12px;">
-          <input type="checkbox" id="dueOnlyCheck" />
+        <label style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 12px;">
+          <input type="checkbox" id="dueOnlyCheck" style="width:auto;" />
           <span>今日候補のみ</span>
         </label>
         <button class="secondary" id="clearSearchBtn">検索クリア</button>
@@ -211,16 +167,64 @@
     </div>
   </section>
 
+  <section id="tab-water-history" class="hidden">
+    <div class="card">
+      <div class="section-title">水管理の履歴</div>
+      <div class="history-toolbar">
+        <input id="waterHistorySearch" placeholder="株名・内容検索" />
+        <select id="waterHistoryTypeFilter">
+          <option value="all">水 / HB / RD すべて</option>
+          <option value="水">水</option>
+          <option value="HB">HB</option>
+          <option value="RD">RD</option>
+        </select>
+        <select id="waterHistoryPlantFilter"></select>
+        <button class="secondary" id="waterHistoryClearBtn">絞り込みクリア</button>
+      </div>
+      <div id="waterHistoryContent"></div>
+    </div>
+  </section>
+
+  <section id="tab-spray-history" class="hidden">
+    <div class="add-box">
+      <div class="section-title">薬剤散布を記録</div>
+      <div class="add-grid">
+        <input id="sprayDate" type="date" />
+        <select id="sprayPlant"></select>
+        <input id="sprayMedicine" placeholder="薬剤名 例: ベンレート" />
+      </div>
+      <div class="add-grid-2">
+        <input id="sprayDilution" placeholder="倍率・量 例: 2000倍 / 2ml" />
+        <input id="sprayMemo" placeholder="補足メモ 例: ダイン使用" />
+      </div>
+      <div style="margin-top:10px;"><button class="spray" id="addSprayBtn">薬剤履歴を追加</button></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">薬剤散布の履歴</div>
+      <div class="history-toolbar">
+        <input id="sprayHistorySearch" placeholder="株名・薬剤名・メモ検索" />
+        <input id="sprayHistoryMedicineFilter" placeholder="薬剤名で絞る" />
+        <select id="sprayHistoryPlantFilter"></select>
+        <button class="secondary" id="sprayHistoryClearBtn">絞り込みクリア</button>
+      </div>
+      <div id="sprayHistoryContent"></div>
+    </div>
+  </section>
+
   <section id="tab-groups" class="hidden">
     <div id="groupsContent"></div>
   </section>
 
-  <section id="tab-logs" class="hidden">
-    <div class="card">
-      <div class="section-title">履歴</div>
-      <div id="logsContent"></div>
+  <div class="modal-wrap" id="modalWrap">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">編集</div>
+        <button class="secondary" id="closeModalBtn">閉じる</button>
+      </div>
+      <div id="modalBody"></div>
     </div>
-  </section>
+  </div>
 
   <script>
     const groupLabels = {
@@ -277,7 +281,7 @@
       { id: 41, name: "ホリダブルースノー", group: "mediumagave", interval: 20, lastWatered: "2026-02-04", rule: "20日目安", note: "" }
     ];
 
-    const defaultLogs = [
+    const defaultWaterLogs = [
       { id: 1, date: "2026-03-10", plantId: 1, type: "水", memo: "" },
       { id: 2, date: "2026-03-10", plantId: 2, type: "水", memo: "" },
       { id: 3, date: "2026-03-10", plantId: 3, type: "水", memo: "" },
@@ -285,20 +289,34 @@
       { id: 5, date: "2026-03-10", plantId: 5, type: "HB", memo: "" }
     ];
 
-    const savedPlants = JSON.parse(localStorage.getItem("plantManagerPlants") || "null");
-    const savedLogs = JSON.parse(localStorage.getItem("plantManagerLogs") || "null");
+    function loadJSON(key, fallback){
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch(e){
+        return fallback;
+      }
+    }
+
+    // 既存データを引き継ぐ
+    const savedPlants = loadJSON("plantManagerPlants", null);
+    const savedOldLogs = loadJSON("plantManagerLogs", null); // 旧水履歴キー
+    const savedWaterLogs = loadJSON("plantManagerWaterLogs", null); // 新水履歴キー
+    const savedSprayLogs = loadJSON("plantManagerSprayLogs", null);
     const savedJudgeDate = localStorage.getItem("plantManagerJudgeDate");
 
     let plants = savedPlants || defaultPlants;
-    let logs = savedLogs || defaultLogs;
+    let waterLogs = savedWaterLogs || savedOldLogs || defaultWaterLogs;
+    let sprayLogs = savedSprayLogs || [];
     let judgeDate = savedJudgeDate || new Date().toISOString().slice(0,10);
 
     const tabs = document.querySelectorAll(".tab-btn");
     const sections = {
       today: document.getElementById("tab-today"),
       plants: document.getElementById("tab-plants"),
-      groups: document.getElementById("tab-groups"),
-      logs: document.getElementById("tab-logs")
+      "water-history": document.getElementById("tab-water-history"),
+      "spray-history": document.getElementById("tab-spray-history"),
+      groups: document.getElementById("tab-groups")
     };
 
     const judgeDateInput = document.getElementById("judgeDate");
@@ -309,7 +327,8 @@
     const todayContent = document.getElementById("todayContent");
     const plantsContent = document.getElementById("plantsContent");
     const groupsContent = document.getElementById("groupsContent");
-    const logsContent = document.getElementById("logsContent");
+    const waterHistoryContent = document.getElementById("waterHistoryContent");
+    const sprayHistoryContent = document.getElementById("sprayHistoryContent");
 
     const newName = document.getElementById("newName");
     const newGroup = document.getElementById("newGroup");
@@ -321,9 +340,29 @@
     const groupFilter = document.getElementById("groupFilter");
     const dueOnlyCheck = document.getElementById("dueOnlyCheck");
 
+    const waterHistorySearch = document.getElementById("waterHistorySearch");
+    const waterHistoryTypeFilter = document.getElementById("waterHistoryTypeFilter");
+    const waterHistoryPlantFilter = document.getElementById("waterHistoryPlantFilter");
+
+    const sprayDate = document.getElementById("sprayDate");
+    const sprayPlant = document.getElementById("sprayPlant");
+    const sprayMedicine = document.getElementById("sprayMedicine");
+    const sprayDilution = document.getElementById("sprayDilution");
+    const sprayMemo = document.getElementById("sprayMemo");
+    const sprayHistorySearch = document.getElementById("sprayHistorySearch");
+    const sprayHistoryMedicineFilter = document.getElementById("sprayHistoryMedicineFilter");
+    const sprayHistoryPlantFilter = document.getElementById("sprayHistoryPlantFilter");
+
+    const modalWrap = document.getElementById("modalWrap");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
     function saveData(){
       localStorage.setItem("plantManagerPlants", JSON.stringify(plants));
-      localStorage.setItem("plantManagerLogs", JSON.stringify(logs));
+      localStorage.setItem("plantManagerWaterLogs", JSON.stringify(waterLogs));
+      localStorage.setItem("plantManagerLogs", JSON.stringify(waterLogs)); // 旧キーも更新
+      localStorage.setItem("plantManagerSprayLogs", JSON.stringify(sprayLogs));
       localStorage.setItem("plantManagerJudgeDate", judgeDate);
     }
 
@@ -350,7 +389,28 @@
       return { label: "待機", cls: "badge-wait", elapsed, dueIn };
     }
 
-    function buildSelectOptions(selectEl, includeAll=false){
+    function plantNameById(id){
+      const plant = plants.find(p => p.id === id);
+      return plant ? plant.name : "不明な株";
+    }
+
+    function buildSelectOptions(selectEl, includeAll=false, allLabel="すべて"){
+      selectEl.innerHTML = "";
+      if (includeAll){
+        const op = document.createElement("option");
+        op.value = "all";
+        op.textContent = allLabel;
+        selectEl.appendChild(op);
+      }
+      plants.forEach(p => {
+        const op = document.createElement("option");
+        op.value = String(p.id);
+        op.textContent = p.name;
+        selectEl.appendChild(op);
+      });
+    }
+
+    function buildGroupOptions(selectEl, includeAll=false){
       selectEl.innerHTML = "";
       if (includeAll){
         const op = document.createElement("option");
@@ -366,17 +426,31 @@
       });
     }
 
+    function escapeHtml(text){
+      return String(text ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function openModal(title, html){
+      modalTitle.textContent = title;
+      modalBody.innerHTML = html;
+      modalWrap.classList.add("show");
+    }
+
+    function closeModal(){
+      modalWrap.classList.remove("show");
+      modalBody.innerHTML = "";
+    }
+
     function markPlant(id, type){
       const plant = plants.find(p => p.id === id);
       if (!plant) return;
       plant.lastWatered = judgeDate;
-      logs.unshift({
-        id: Date.now() + Math.random(),
-        date: judgeDate,
-        plantId: id,
-        type,
-        memo: ""
-      });
+      waterLogs.unshift({ id: Date.now() + Math.random(), date: judgeDate, plantId: id, type, memo: "" });
       saveData();
       render();
     }
@@ -385,13 +459,7 @@
       const duePlants = plants.filter(p => statusForPlant(p).dueIn <= 0);
       duePlants.forEach(p => {
         p.lastWatered = judgeDate;
-        logs.unshift({
-          id: Date.now() + Math.random(),
-          date: judgeDate,
-          plantId: p.id,
-          type,
-          memo: ""
-        });
+        waterLogs.unshift({ id: Date.now() + Math.random(), date: judgeDate, plantId: p.id, type, memo: "" });
       });
       saveData();
       render();
@@ -410,8 +478,10 @@
     }
 
     function deletePlant(id){
+      if (!confirm("この株を削除する？ 水履歴と薬剤履歴も一緒に消える。")) return;
       plants = plants.filter(p => p.id !== id);
-      logs = logs.filter(l => l.plantId !== id);
+      waterLogs = waterLogs.filter(l => l.plantId !== id);
+      sprayLogs = sprayLogs.filter(l => l.plantId !== id);
       saveData();
       render();
     }
@@ -436,13 +506,174 @@
       render();
     }
 
+    function addSprayLog(){
+      if (!sprayPlant.value) return alert("株を選んで");
+      if (!sprayMedicine.value.trim()) return alert("薬剤名を入れて");
+      sprayLogs.unshift({
+        id: Date.now() + Math.random(),
+        date: sprayDate.value || judgeDate,
+        plantId: Number(sprayPlant.value),
+        medicine: sprayMedicine.value.trim(),
+        dilution: sprayDilution.value.trim(),
+        memo: sprayMemo.value.trim()
+      });
+      sprayMedicine.value = "";
+      sprayDilution.value = "";
+      sprayMemo.value = "";
+      saveData();
+      render();
+    }
+
+    function updateInterval(id, value){
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+      plant.interval = Number(value || 0);
+      saveData();
+      render();
+    }
+
+    function updateGroup(id, value){
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+      plant.group = value;
+      saveData();
+      render();
+    }
+
+    function openPlantEdit(id){
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+      openModal("株情報を編集", `
+        <div class="modal-grid">
+          <div><label>株名</label><input id="editPlantName" value="${escapeHtml(plant.name)}"></div>
+          <div><label>グループ</label><select id="editPlantGroup">${Object.entries(groupLabels).map(([key, label]) => `<option value="${key}" ${plant.group===key?"selected":""}>${label}</option>`).join("")}</select></div>
+          <div><label>今の空き日数</label><input id="editPlantInterval" type="number" value="${plant.interval}"></div>
+          <div><label>最終給水日</label><input id="editPlantLastWatered" type="date" value="${plant.lastWatered}"></div>
+        </div>
+        <div style="margin-bottom:10px;"><label>ルールメモ</label><input id="editPlantRule" value="${escapeHtml(plant.rule || "")}"></div>
+        <div><label>補足メモ</label><textarea id="editPlantNote">${escapeHtml(plant.note || "")}</textarea></div>
+        <div class="footer-actions">
+          <button class="secondary" onclick="closeModal()">キャンセル</button>
+          <button class="primary" onclick="savePlantEdit(${id})">保存</button>
+        </div>
+      `);
+    }
+
+    function savePlantEdit(id){
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+      plant.name = document.getElementById("editPlantName").value.trim() || plant.name;
+      plant.group = document.getElementById("editPlantGroup").value;
+      plant.interval = Number(document.getElementById("editPlantInterval").value || plant.interval);
+      plant.lastWatered = document.getElementById("editPlantLastWatered").value || plant.lastWatered;
+      plant.rule = document.getElementById("editPlantRule").value.trim();
+      plant.note = document.getElementById("editPlantNote").value.trim();
+      saveData();
+      closeModal();
+      render();
+    }
+
+    function openWaterLogEdit(id){
+      const log = waterLogs.find(l => l.id === id);
+      if (!log) return;
+      openModal("水履歴を編集", `
+        <div class="modal-grid">
+          <div><label>日付</label><input id="editWaterDate" type="date" value="${log.date}"></div>
+          <div><label>株</label><select id="editWaterPlant">${plants.map(p => `<option value="${p.id}" ${p.id===log.plantId?"selected":""}>${escapeHtml(p.name)}</option>`).join("")}</select></div>
+          <div><label>内容</label><select id="editWaterType"><option value="水" ${log.type==='水'?'selected':''}>水</option><option value="HB" ${log.type==='HB'?'selected':''}>HB</option><option value="RD" ${log.type==='RD'?'selected':''}>RD</option></select></div>
+          <div><label>メモ</label><input id="editWaterMemo" value="${escapeHtml(log.memo || "")}"></div>
+        </div>
+        <div class="footer-actions">
+          <button class="danger" onclick="deleteWaterLog(${id})">削除</button>
+          <button class="secondary" onclick="closeModal()">キャンセル</button>
+          <button class="primary" onclick="saveWaterLogEdit(${id})">保存</button>
+        </div>
+      `);
+    }
+
+    function saveWaterLogEdit(id){
+      const log = waterLogs.find(l => l.id === id);
+      if (!log) return;
+      const oldPlantId = log.plantId;
+      const oldDate = log.date;
+      log.date = document.getElementById("editWaterDate").value || log.date;
+      log.plantId = Number(document.getElementById("editWaterPlant").value);
+      log.type = document.getElementById("editWaterType").value;
+      log.memo = document.getElementById("editWaterMemo").value.trim();
+      // 最終給水日を履歴全体から再計算
+      recalcPlantLastWatered(oldPlantId);
+      recalcPlantLastWatered(log.plantId);
+      saveData();
+      closeModal();
+      render();
+    }
+
+    function deleteWaterLog(id){
+      const log = waterLogs.find(l => l.id === id);
+      if (!log) return;
+      if (!confirm("この水履歴を削除する？")) return;
+      const plantId = log.plantId;
+      waterLogs = waterLogs.filter(l => l.id !== id);
+      recalcPlantLastWatered(plantId);
+      saveData();
+      closeModal();
+      render();
+    }
+
+    function recalcPlantLastWatered(plantId){
+      const plant = plants.find(p => p.id === plantId);
+      if (!plant) return;
+      const related = waterLogs.filter(l => l.plantId === plantId).sort((a,b) => String(b.date).localeCompare(String(a.date)));
+      if (related.length) plant.lastWatered = related[0].date;
+    }
+
+    function openSprayLogEdit(id){
+      const log = sprayLogs.find(l => l.id === id);
+      if (!log) return;
+      openModal("薬剤履歴を編集", `
+        <div class="modal-grid">
+          <div><label>日付</label><input id="editSprayDate" type="date" value="${log.date}"></div>
+          <div><label>株</label><select id="editSprayPlant">${plants.map(p => `<option value="${p.id}" ${p.id===log.plantId?"selected":""}>${escapeHtml(p.name)}</option>`).join("")}</select></div>
+          <div><label>薬剤名</label><input id="editSprayMedicine" value="${escapeHtml(log.medicine || "")}"></div>
+          <div><label>倍率・量</label><input id="editSprayDilution" value="${escapeHtml(log.dilution || "")}"></div>
+        </div>
+        <div><label>メモ</label><textarea id="editSprayMemo">${escapeHtml(log.memo || "")}</textarea></div>
+        <div class="footer-actions">
+          <button class="danger" onclick="deleteSprayLog(${id})">削除</button>
+          <button class="secondary" onclick="closeModal()">キャンセル</button>
+          <button class="spray" onclick="saveSprayLogEdit(${id})">保存</button>
+        </div>
+      `);
+    }
+
+    function saveSprayLogEdit(id){
+      const log = sprayLogs.find(l => l.id === id);
+      if (!log) return;
+      log.date = document.getElementById("editSprayDate").value || log.date;
+      log.plantId = Number(document.getElementById("editSprayPlant").value);
+      log.medicine = document.getElementById("editSprayMedicine").value.trim();
+      log.dilution = document.getElementById("editSprayDilution").value.trim();
+      log.memo = document.getElementById("editSprayMemo").value.trim();
+      saveData();
+      closeModal();
+      render();
+    }
+
+    function deleteSprayLog(id){
+      if (!confirm("この薬剤履歴を削除する？")) return;
+      sprayLogs = sprayLogs.filter(l => l.id !== id);
+      saveData();
+      closeModal();
+      render();
+    }
+
     function renderStats(){
       const dueToday = plants.filter(p => statusForPlant(p).dueIn <= 0).length;
       const soon = plants.filter(p => statusForPlant(p).dueIn === 1).length;
       statDue.textContent = dueToday;
       statSoon.textContent = soon;
       statCount.textContent = plants.length;
-      statLogs.textContent = logs.length;
+      statLogs.textContent = waterLogs.length + sprayLogs.length;
     }
 
     function renderToday(){
@@ -452,21 +683,15 @@
         const st = statusForPlant(p);
         if (st.dueIn <= 0) grouped[p.group].push({ ...p, st });
       });
-
       let html = "";
       const hasAny = Object.values(grouped).some(arr => arr.length > 0);
-
       if (!hasAny){
         todayContent.innerHTML = '<div class="empty">今日は水やり候補なし</div>';
         return;
       }
-
       Object.entries(grouped).forEach(([groupKey, items]) => {
         if (!items.length) return;
-        html += `<div class="group-block">
-          <div class="group-name">${groupLabels[groupKey]}</div>
-          <div class="plant-grid">`;
-
+        html += `<div class="group-block"><div class="group-name">${groupLabels[groupKey]}</div><div class="plant-grid">`;
         items.forEach(p => {
           html += `
             <div class="plant-card">
@@ -490,10 +715,8 @@
               </div>
             </div>`;
         });
-
         html += `</div></div>`;
       });
-
       todayContent.innerHTML = html;
     }
 
@@ -501,22 +724,16 @@
       const q = searchInput.value.trim().toLowerCase();
       const filterGroup = groupFilter.value;
       const dueOnly = dueOnlyCheck.checked;
-
       let list = plants.filter(p => {
-        const inText =
-          p.name.toLowerCase().includes(q) ||
-          (p.rule || "").toLowerCase().includes(q) ||
-          (p.note || "").toLowerCase().includes(q);
+        const inText = p.name.toLowerCase().includes(q) || String(p.rule || "").toLowerCase().includes(q) || String(p.note || "").toLowerCase().includes(q);
         const inGroup = filterGroup === "all" ? true : p.group === filterGroup;
         const inDue = dueOnly ? statusForPlant(p).dueIn <= 0 : true;
         return inText && inGroup && inDue;
       });
-
       if (!list.length){
         plantsContent.innerHTML = '<div class="empty">該当する株なし</div>';
         return;
       }
-
       plantsContent.innerHTML = list.map(p => {
         const st = statusForPlant(p);
         return `
@@ -532,51 +749,92 @@
                 <div class="note">${escapeHtml(p.note || "")}</div>
               </div>
             </div>
-
             <div class="meta" style="margin-top:12px;">
               <div class="meta-box">前回<b>${p.lastWatered}</b></div>
               <div class="meta-box">経過<b>${st.elapsed}日</b></div>
-              <div class="meta-box">今の空き日数
-                <b style="margin-bottom:8px;">${p.interval}日</b>
-                <input type="number" value="${p.interval}" onchange="updateInterval(${p.id}, this.value)" />
-              </div>
+              <div class="meta-box">今の空き日数<b style="margin-bottom:8px;">${p.interval}日</b><input type="number" value="${p.interval}" onchange="updateInterval(${p.id}, this.value)" /></div>
               <div class="meta-box">次回目安<b>${addDays(p.lastWatered, p.interval)}</b></div>
             </div>
-
             <div class="plant-actions">
               <button class="secondary" onclick="movePlant(${p.id}, 'up')">↑</button>
               <button class="secondary" onclick="movePlant(${p.id}, 'down')">↓</button>
-              <select onchange="updateGroup(${p.id}, this.value)">
-                ${Object.entries(groupLabels).map(([key, label]) =>
-                  `<option value="${key}" ${p.group === key ? "selected" : ""}>${label}</option>`
-                ).join("")}
-              </select>
+              <select onchange="updateGroup(${p.id}, this.value)">${Object.entries(groupLabels).map(([key, label]) => `<option value="${key}" ${p.group===key?"selected":""}>${label}</option>`).join("")}</select>
               <button class="primary" onclick="markPlant(${p.id}, '水')">水</button>
+              <button class="secondary" onclick="openPlantEdit(${p.id})">編集</button>
               <button class="danger" onclick="deletePlant(${p.id})">削除</button>
             </div>
           </div>`;
       }).join("");
     }
 
+    function renderWaterHistory(){
+      const q = waterHistorySearch.value.trim().toLowerCase();
+      const typeFilter = waterHistoryTypeFilter.value;
+      const plantFilter = waterHistoryPlantFilter.value;
+      const list = waterLogs.filter(log => {
+        const name = plantNameById(log.plantId).toLowerCase();
+        const inText = name.includes(q) || String(log.type || "").toLowerCase().includes(q) || String(log.memo || "").toLowerCase().includes(q);
+        const inType = typeFilter === "all" ? true : log.type === typeFilter;
+        const inPlant = plantFilter === "all" ? true : String(log.plantId) === plantFilter;
+        return inText && inType && inPlant;
+      });
+      if (!list.length){
+        waterHistoryContent.innerHTML = '<div class="empty">水履歴なし</div>';
+        return;
+      }
+      waterHistoryContent.innerHTML = list.map(log => `
+        <div class="log-item">
+          <div>
+            <div style="font-weight:700;">${escapeHtml(plantNameById(log.plantId))}</div>
+            <div class="small">${log.date} / ${escapeHtml(log.memo || '')}</div>
+          </div>
+          <div class="log-actions">
+            <span class="badge badge-wait">${escapeHtml(log.type)}</span>
+            <button class="secondary" onclick="openWaterLogEdit(${log.id})">編集</button>
+          </div>
+        </div>`).join("");
+    }
+
+    function renderSprayHistory(){
+      const q = sprayHistorySearch.value.trim().toLowerCase();
+      const medicineFilter = sprayHistoryMedicineFilter.value.trim().toLowerCase();
+      const plantFilter = sprayHistoryPlantFilter.value;
+      const list = sprayLogs.filter(log => {
+        const name = plantNameById(log.plantId).toLowerCase();
+        const inText = name.includes(q) || String(log.medicine || "").toLowerCase().includes(q) || String(log.memo || "").toLowerCase().includes(q) || String(log.dilution || "").toLowerCase().includes(q);
+        const inMedicine = medicineFilter ? String(log.medicine || "").toLowerCase().includes(medicineFilter) : true;
+        const inPlant = plantFilter === "all" ? true : String(log.plantId) === plantFilter;
+        return inText && inMedicine && inPlant;
+      });
+      if (!list.length){
+        sprayHistoryContent.innerHTML = '<div class="empty">薬剤履歴なし</div>';
+        return;
+      }
+      sprayHistoryContent.innerHTML = list.map(log => `
+        <div class="log-item">
+          <div>
+            <div style="font-weight:700;">${escapeHtml(plantNameById(log.plantId))}</div>
+            <div class="small">${log.date} / ${escapeHtml(log.medicine || '')} / ${escapeHtml(log.dilution || '')}</div>
+            <div class="small">${escapeHtml(log.memo || '')}</div>
+          </div>
+          <div class="log-actions">
+            <span class="badge badge-spray">薬剤</span>
+            <button class="secondary" onclick="openSprayLogEdit(${log.id})">編集</button>
+          </div>
+        </div>`).join("");
+    }
+
     function renderGroups(){
       let html = "";
       Object.entries(groupLabels).forEach(([key, label]) => {
         const items = plants.filter(p => p.group === key);
-        html += `<div class="card" style="margin-bottom:14px;">
-          <div class="section-title">${label} <span class="small">(${items.length}株)</span></div>`;
+        html += `<div class="card" style="margin-bottom:14px;"><div class="section-title">${label} <span class="small">(${items.length}株)</span></div>`;
         if (!items.length){
           html += `<div class="empty">登録なし</div>`;
         } else {
           items.forEach(p => {
             const st = statusForPlant(p);
-            html += `
-              <div class="log-item">
-                <div>
-                  <div style="font-weight:700;">${escapeHtml(p.name)}</div>
-                  <div class="small">${escapeHtml(p.rule || "")}</div>
-                </div>
-                <span class="badge ${st.cls}">${st.label}</span>
-              </div>`;
+            html += `<div class="log-item"><div><div style="font-weight:700;">${escapeHtml(p.name)}</div><div class="small">${escapeHtml(p.rule || "")}</div></div><span class="badge ${st.cls}">${st.label}</span></div>`;
           });
         }
         html += `</div>`;
@@ -584,55 +842,28 @@
       groupsContent.innerHTML = html;
     }
 
-    function renderLogs(){
-      if (!logs.length){
-        logsContent.innerHTML = '<div class="empty">履歴なし</div>';
-        return;
-      }
-      logsContent.innerHTML = logs.map(log => {
-        const plant = plants.find(p => p.id === log.plantId);
-        return `
-          <div class="log-item">
-            <div>
-              <div style="font-weight:700;">${escapeHtml(plant ? plant.name : "不明な株")}</div>
-              <div class="small">${log.date}</div>
-            </div>
-            <span class="badge badge-wait">${escapeHtml(log.type)}</span>
-          </div>`;
-      }).join("");
-    }
-
-    function updateInterval(id, value){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      plant.interval = Number(value || 0);
-      saveData();
-      render();
-    }
-
-    function updateGroup(id, value){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      plant.group = value;
-      saveData();
-      render();
-    }
-
-    function escapeHtml(text){
-      return String(text)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    function renderStats(){
+      const dueToday = plants.filter(p => statusForPlant(p).dueIn <= 0).length;
+      const soon = plants.filter(p => statusForPlant(p).dueIn === 1).length;
+      statDue.textContent = dueToday;
+      statSoon.textContent = soon;
+      statCount.textContent = plants.length;
+      statLogs.textContent = waterLogs.length + sprayLogs.length;
     }
 
     function render(){
+      buildGroupOptions(newGroup, false);
+      buildGroupOptions(groupFilter, true);
+      buildSelectOptions(waterHistoryPlantFilter, true, "株すべて");
+      buildSelectOptions(sprayPlant, false);
+      buildSelectOptions(sprayHistoryPlantFilter, true, "株すべて");
+      sprayDate.value = judgeDate;
       renderStats();
       renderToday();
       renderPlants();
+      renderWaterHistory();
+      renderSprayHistory();
       renderGroups();
-      renderLogs();
     }
 
     tabs.forEach(btn => {
@@ -655,22 +886,51 @@
     document.getElementById("hbAllBtn").addEventListener("click", () => markAllDue("HB"));
     document.getElementById("rdAllBtn").addEventListener("click", () => markAllDue("RD"));
     document.getElementById("addPlantBtn").addEventListener("click", addPlant);
+    document.getElementById("addSprayBtn").addEventListener("click", addSprayLog);
     document.getElementById("clearSearchBtn").addEventListener("click", () => {
       searchInput.value = "";
       groupFilter.value = "all";
       dueOnlyCheck.checked = false;
       render();
     });
+    document.getElementById("waterHistoryClearBtn").addEventListener("click", () => {
+      waterHistorySearch.value = "";
+      waterHistoryTypeFilter.value = "all";
+      waterHistoryPlantFilter.value = "all";
+      render();
+    });
+    document.getElementById("sprayHistoryClearBtn").addEventListener("click", () => {
+      sprayHistorySearch.value = "";
+      sprayHistoryMedicineFilter.value = "";
+      sprayHistoryPlantFilter.value = "all";
+      render();
+    });
 
-    searchInput.addEventListener("input", render);
-    groupFilter.addEventListener("change", render);
-    dueOnlyCheck.addEventListener("change", render);
+    [searchInput, groupFilter, dueOnlyCheck, waterHistorySearch, waterHistoryTypeFilter, waterHistoryPlantFilter, sprayHistorySearch, sprayHistoryMedicineFilter, sprayHistoryPlantFilter].forEach(el => {
+      el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', render);
+      if (el.tagName === 'SELECT') el.addEventListener('change', render);
+    });
 
-    buildSelectOptions(newGroup, false);
-    buildSelectOptions(groupFilter, true);
-    groupFilter.value = "all";
+    closeModalBtn.addEventListener("click", closeModal);
+    modalWrap.addEventListener("click", (e) => { if (e.target === modalWrap) closeModal(); });
 
     render();
+
+    // グローバル公開
+    window.markPlant = markPlant;
+    window.movePlant = movePlant;
+    window.deletePlant = deletePlant;
+    window.updateInterval = updateInterval;
+    window.updateGroup = updateGroup;
+    window.openPlantEdit = openPlantEdit;
+    window.savePlantEdit = savePlantEdit;
+    window.openWaterLogEdit = openWaterLogEdit;
+    window.saveWaterLogEdit = saveWaterLogEdit;
+    window.deleteWaterLog = deleteWaterLog;
+    window.openSprayLogEdit = openSprayLogEdit;
+    window.saveSprayLogEdit = saveSprayLogEdit;
+    window.deleteSprayLog = deleteSprayLog;
+    window.closeModal = closeModal;
   </script>
 </body>
 </html>
