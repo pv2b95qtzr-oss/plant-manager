@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>植物管理アプリ v3</title>
+  <title>植物管理アプリ v2</title>
   <style>
     :root{
       --bg:#f4f6f8;
@@ -102,7 +102,7 @@
   <div class="top">
     <div>
       <div class="title">植物管理アプリ</div>
-      <div class="sub">水・HB・RD・薬剤を分けて管理。過去履歴の確認、あとから編集、株情報の編集、グループ一括入力に対応。</div>
+      <div class="sub">水管理と薬剤散布を分けて管理。過去履歴の確認、あとから編集、株情報の編集に対応。</div>
     </div>
     <div class="date-box">
       <label>判定日</label>
@@ -127,29 +127,11 @@
 
   <section id="tab-today">
     <div class="card">
-      <div class="section-title">今日の管理</div>
+      <div class="section-title">今日やる株</div>
       <div class="top-actions">
-        <button class="primary" id="waterAllBtn">今日の水候補をまとめて水</button>
-        <button class="secondary" id="hbAllBtn">今日のHB候補をまとめてHB</button>
-        <button class="secondary" id="rdAllBtn">今日のRD候補をまとめてRD</button>
-      </div>
-      <div class="add-box" style="margin-bottom:14px;">
-        <div class="section-title" style="font-size:18px;">グループ一括入力</div>
-        <div class="add-grid">
-          <select id="bulkGroupSelect"></select>
-          <select id="bulkActionType">
-            <option value="water">水</option>
-            <option value="hb">HB</option>
-            <option value="rd">RD</option>
-            <option value="spray">薬剤</option>
-          </select>
-          <input id="bulkDate" type="date" />
-        </div>
-        <div class="add-grid-2">
-          <input id="bulkMedicine" placeholder="薬剤名（薬剤選択時のみ）" />
-          <input id="bulkMemo" placeholder="メモ・倍率など" />
-        </div>
-        <div style="margin-top:10px;"><button class="primary" id="bulkApplyBtn">グループ丸ごと記録</button></div>
+        <button class="primary" id="waterAllBtn">今日の候補をまとめて水</button>
+        <button class="secondary" id="hbAllBtn">今日の候補をHB</button>
+        <button class="secondary" id="rdAllBtn">今日の候補をRD</button>
       </div>
       <div id="todayContent"></div>
     </div>
@@ -172,7 +154,6 @@
 
     <div class="card">
       <div class="section-title">植物一覧</div>
-      <div class="small" style="margin-bottom:10px;">各株ごとに 水 / HB / RD の空き日数を別々に設定できる</div>
       <div class="toolbar">
         <input id="searchInput" placeholder="株名・ルール・メモ検索" />
         <select id="groupFilter"></select>
@@ -253,14 +234,15 @@
       wildagave: "wildagave",
       cactus: "cactus",
       codex: "codex",
-      euphorbia: "euphorbia"
+      euphorbia: "euphorbia",
+      other: "Other"
     };
 
     const defaultPlants = [
-      { id: 1, name: "子株", group: "smallagave", interval: 3, hbInterval: 7, rdInterval: 14, lastWatered: "2026-03-10", lastHbDate: "2026-03-10", lastRdDate: "2026-03-10", rule: "子株3", note: "seaser redform / italia noname / 海王" },
-      { id: 2, name: "GG compacta", group: "mediumagave", interval: 7, hbInterval: 14, rdInterval: 21, lastWatered: "2026-03-10", lastHbDate: "2026-03-10", lastRdDate: "2026-03-10", rule: "7日目安", note: "" },
-      { id: 3, name: "萬代厳竜", group: "mediumagave", interval: 7, hbInterval: 14, rdInterval: 21, lastWatered: "2026-03-10", lastHbDate: "2026-03-10", lastRdDate: "2026-03-10", rule: "7日目安", note: "" },
-      { id: 4, name: "ホリダ", group: "mediumagave", interval: 7, hbInterval: 14, rdInterval: 21, lastWatered: "2026-03-10", lastHbDate: "2026-03-10", lastRdDate: "2026-03-10", rule: "7日目安", note: "" },
+      { id: 1, name: "子株", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "子株3", note: "seaser redform / italia noname / 海王" },
+      { id: 2, name: "GG compacta", group: "mediumagave", interval: 7, lastWatered: "2026-03-10", rule: "7日目安", note: "" },
+      { id: 3, name: "萬代厳竜", group: "mediumagave", interval: 7, lastWatered: "2026-03-10", rule: "7日目安", note: "" },
+      { id: 4, name: "ホリダ", group: "mediumagave", interval: 7, lastWatered: "2026-03-10", rule: "7日目安", note: "" },
       { id: 5, name: "spawn", group: "mediumagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
       { id: 6, name: "orca", group: "smallagave", interval: 2, lastWatered: "2026-03-10", rule: "2日目安", note: "" },
       { id: 7, name: "ripple effect", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "仮で3日", note: "" },
@@ -324,13 +306,7 @@
     const savedSprayLogs = loadJSON("plantManagerSprayLogs", null);
     const savedJudgeDate = localStorage.getItem("plantManagerJudgeDate");
 
-    let plants = (savedPlants || defaultPlants).map(p => ({
-      ...p,
-      hbInterval: p.hbInterval ?? (p.interval ? Math.max(p.interval, p.interval + 5) : 14),
-      rdInterval: p.rdInterval ?? (p.interval ? Math.max(p.interval + 7, p.interval + 10) : 21),
-      lastHbDate: p.lastHbDate || p.lastWatered,
-      lastRdDate: p.lastRdDate || p.lastWatered
-    }));
+    let plants = savedPlants || defaultPlants;
     let waterLogs = savedWaterLogs || savedOldLogs || defaultWaterLogs;
     let sprayLogs = savedSprayLogs || [];
     let judgeDate = savedJudgeDate || new Date().toISOString().slice(0,10);
@@ -414,25 +390,6 @@
       return { label: "待機", cls: "badge-wait", elapsed, dueIn };
     }
 
-    function hbStatusForPlant(plant){
-      const elapsed = daysBetween(plant.lastHbDate || plant.lastWatered, judgeDate);
-      const dueIn = (plant.hbInterval ?? 14) - elapsed;
-      if (dueIn <= 0) return { label: "今日HB", cls: "badge-due", elapsed, dueIn };
-      if (dueIn === 1) return { label: "明日HB", cls: "badge-soon", elapsed, dueIn };
-      return { label: "HB待機", cls: "badge-wait", elapsed, dueIn };
-    }
-
-    function rdStatusForPlant(plant){
-      const elapsed = daysBetween(plant.lastRdDate || plant.lastWatered, judgeDate);
-      const dueIn = (plant.rdInterval ?? 21) - elapsed;
-      if (dueIn <= 0) return { label: "今日RD", cls: "badge-due", elapsed, dueIn };
-      if (dueIn === 1) return { label: "明日RD", cls: "badge-soon", elapsed, dueIn };
-      return { label: "RD待機", cls: "badge-wait", elapsed, dueIn };
-    };
-      if (dueIn === 1) return { label: "明日目安", cls: "badge-soon", elapsed, dueIn };
-      return { label: "待機", cls: "badge-wait", elapsed, dueIn };
-    }
-
     function plantNameById(id){
       const plant = plants.find(p => p.id === id);
       return plant ? plant.name : "不明な株";
@@ -493,25 +450,16 @@
     function markPlant(id, type){
       const plant = plants.find(p => p.id === id);
       if (!plant) return;
-      if (type === '水') plant.lastWatered = judgeDate;
-      if (type === 'HB') plant.lastHbDate = judgeDate;
-      if (type === 'RD') plant.lastRdDate = judgeDate;
+      plant.lastWatered = judgeDate;
       waterLogs.unshift({ id: Date.now() + Math.random(), date: judgeDate, plantId: id, type, memo: "" });
       saveData();
       render();
     }
 
     function markAllDue(type){
-      const targetPlants = plants.filter(p => {
-        if (type === '水') return statusForPlant(p).dueIn <= 0;
-        if (type === 'HB') return hbStatusForPlant(p).dueIn <= 0;
-        if (type === 'RD') return rdStatusForPlant(p).dueIn <= 0;
-        return false;
-      });
-      targetPlants.forEach(p => {
-        if (type === '水') p.lastWatered = judgeDate;
-        if (type === 'HB') p.lastHbDate = judgeDate;
-        if (type === 'RD') p.lastRdDate = judgeDate;
+      const duePlants = plants.filter(p => statusForPlant(p).dueIn <= 0);
+      duePlants.forEach(p => {
+        p.lastWatered = judgeDate;
         waterLogs.unshift({ id: Date.now() + Math.random(), date: judgeDate, plantId: p.id, type, memo: "" });
       });
       saveData();
@@ -542,17 +490,12 @@
     function addPlant(){
       const name = newName.value.trim();
       if (!name) return alert("株名を入れて");
-      const baseInterval = Number(newInterval.value || 7);
       plants.push({
         id: Date.now(),
         name,
         group: newGroup.value,
-        interval: baseInterval,
-        hbInterval: Math.max(baseInterval, baseInterval + 5),
-        rdInterval: Math.max(baseInterval + 7, baseInterval + 10),
+        interval: Number(newInterval.value || 7),
         lastWatered: judgeDate,
-        lastHbDate: judgeDate,
-        lastRdDate: judgeDate,
         rule: newRule.value.trim(),
         note: newNote.value.trim()
       });
@@ -605,12 +548,8 @@
         <div class="modal-grid">
           <div><label>株名</label><input id="editPlantName" value="${escapeHtml(plant.name)}"></div>
           <div><label>グループ</label><select id="editPlantGroup">${Object.entries(groupLabels).map(([key, label]) => `<option value="${key}" ${plant.group===key?"selected":""}>${label}</option>`).join("")}</select></div>
-          <div><label>水の空き日数</label><input id="editPlantInterval" type="number" value="${plant.interval}"></div>
-          <div><label>HBの空き日数</label><input id="editPlantHbInterval" type="number" value="${plant.hbInterval ?? plant.interval}"></div>
-          <div><label>RDの空き日数</label><input id="editPlantRdInterval" type="number" value="${plant.rdInterval ?? plant.interval}"></div>
+          <div><label>今の空き日数</label><input id="editPlantInterval" type="number" value="${plant.interval}"></div>
           <div><label>最終給水日</label><input id="editPlantLastWatered" type="date" value="${plant.lastWatered}"></div>
-          <div><label>最終HB日</label><input id="editPlantLastHb" type="date" value="${plant.lastHbDate || plant.lastWatered}"></div>
-          <div><label>最終RD日</label><input id="editPlantLastRd" type="date" value="${plant.lastRdDate || plant.lastWatered}"></div>
         </div>
         <div style="margin-bottom:10px;"><label>ルールメモ</label><input id="editPlantRule" value="${escapeHtml(plant.rule || "")}"></div>
         <div><label>補足メモ</label><textarea id="editPlantNote">${escapeHtml(plant.note || "")}</textarea></div>
@@ -627,11 +566,7 @@
       plant.name = document.getElementById("editPlantName").value.trim() || plant.name;
       plant.group = document.getElementById("editPlantGroup").value;
       plant.interval = Number(document.getElementById("editPlantInterval").value || plant.interval);
-      plant.hbInterval = Number(document.getElementById("editPlantHbInterval").value || plant.hbInterval || plant.interval);
-      plant.rdInterval = Number(document.getElementById("editPlantRdInterval").value || plant.rdInterval || plant.interval);
       plant.lastWatered = document.getElementById("editPlantLastWatered").value || plant.lastWatered;
-      plant.lastHbDate = document.getElementById("editPlantLastHb").value || plant.lastHbDate || plant.lastWatered;
-      plant.lastRdDate = document.getElementById("editPlantLastRd").value || plant.lastRdDate || plant.lastWatered;
       plant.rule = document.getElementById("editPlantRule").value.trim();
       plant.note = document.getElementById("editPlantNote").value.trim();
       saveData();
@@ -737,7 +672,10 @@
       const dueToday = plants.filter(p => statusForPlant(p).dueIn <= 0).length;
       const soon = plants.filter(p => statusForPlant(p).dueIn === 1).length;
       statDue.textContent = dueToday;
-
+      statSoon.textContent = soon;
+      statCount.textContent = plants.length;
+      statLogs.textContent = waterLogs.length + sprayLogs.length;
+    }
 
     function renderToday(){
       const grouped = {};
