@@ -3,106 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>植物管理アプリ v2</title>
+  <title>植物管理アプリ Final</title>
   <style>
     :root{
-      --bg:#f4f6f8;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --blue:#2563eb;
-      --green:#059669;
-      --orange:#d97706;
-      --red:#dc2626;
-      --purple:#7c3aed;
-      --shadow:0 6px 18px rgba(15,23,42,.08);
-      --radius:18px;
+      --bg:#f4f6f8;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;
+      --blue:#2563eb;--green:#059669;--orange:#d97706;--red:#dc2626;--purple:#7c3aed;
+      --shadow:0 6px 18px rgba(15,23,42,.08);--radius:18px;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP",sans-serif}
-    body{padding:16px;max-width:1080px;margin:0 auto}
-    h1,h2,h3,p{margin:0}
-    button,input,select,textarea{font:inherit}
-    .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-    .title{font-size:28px;font-weight:800;line-height:1.2}
-    .sub{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.5}
-    .date-box{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:14px 16px;min-width:220px}
-    .date-box label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-    .date-box input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;background:#fff}
-    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-    .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:16px}
-    .stat-label{font-size:12px;color:var(--muted);margin-bottom:6px}
-    .stat-value{font-size:32px;font-weight:800}
-    .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
-    .tab-btn{border:none;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:14px 10px;font-size:16px;font-weight:700;cursor:pointer}
-    .tab-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-    .hidden{display:none !important}
-    .section-title{font-size:20px;font-weight:800;margin-bottom:12px}
-    input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);background:#fff;border-radius:14px}
+    *{box-sizing:border-box} html,body{margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text);max-width:1100px;margin:0 auto;padding:16px 16px 92px}
+    h1,h2,h3,p{margin:0} button,input,select,textarea{font:inherit}
+    input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--text)}
     button{border:none;cursor:pointer;padding:12px 14px;border-radius:14px;min-height:46px}
-    .primary{background:var(--blue);color:#fff}
-    .secondary{background:#fff;border:1px solid var(--line)}
-    .success{background:var(--green);color:#fff}
-    .warning{background:var(--orange);color:#fff}
-    .danger{background:var(--red);color:#fff}
-    .spray{background:var(--purple);color:#fff}
-    .muted{color:var(--muted)}
-    .toolbar{display:grid;grid-template-columns:1.4fr 1fr auto auto;gap:10px;margin-bottom:14px}
-    .top-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-    .group-block{margin-top:18px}
-    .group-name{font-size:14px;font-weight:800;color:var(--muted);margin:0 0 8px 4px}
-    .plant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .plant-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
-    .plant-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
-    .plant-name{font-size:18px;font-weight:800;line-height:1.25}
-    .badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;white-space:nowrap}
-    .badge-due{background:#fee2e2;color:#991b1b}
-    .badge-soon{background:#fef3c7;color:#92400e}
-    .badge-wait{background:#e5e7eb;color:#374151}
-    .badge-spray{background:#ede9fe;color:#5b21b6}
-    .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
-    .meta-box{background:#f8fafc;border-radius:14px;padding:10px;font-size:13px;line-height:1.4}
-    .meta-box b{display:block;font-size:15px;color:#111827;margin-top:3px}
-    .btn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .btn-row button{font-weight:800}
-    .list-card{margin-bottom:12px}
-    .list-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
-    .rule{font-size:13px;color:var(--muted);margin-top:4px}
-    .note{font-size:13px;color:#4b5563;margin-top:4px}
-    .plant-actions{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}
-    .empty{background:#fff;border:1px dashed var(--line);border-radius:18px;padding:24px;text-align:center;color:var(--muted)}
-    .history-toolbar{display:grid;grid-template-columns:1fr 180px 180px auto;gap:10px;margin-bottom:12px}
-    .log-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:10px}
-    .log-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .small{font-size:13px;color:var(--muted)}
-    .add-box{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
-    .add-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px;margin-bottom:10px}
-    .add-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .modal-wrap{position:fixed;inset:0;background:rgba(15,23,42,.38);display:none;align-items:flex-end;justify-content:center;padding:12px;z-index:50}
-    .modal-wrap.show{display:flex}
-    .modal{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px 24px 18px 18px;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:18px}
-    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-    .modal-title{font-size:22px;font-weight:800}
-    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-    .footer-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
-    .inline-link{background:none;border:none;padding:0;color:var(--blue);min-height:auto;border-radius:0}
-    .pill{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700}
-    @media (max-width: 800px){
-      .grid-4{grid-template-columns:repeat(2,1fr)}
-      .tabs{grid-template-columns:repeat(2,1fr)}
-      .toolbar,.history-toolbar,.top-actions,.add-grid,.add-grid-2,.plant-grid,.meta,.btn-row,.plant-actions,.modal-grid{grid-template-columns:1fr}
-      body{padding:12px}
-      .title{font-size:24px}
-      .modal{padding:14px}
-    }
+    .primary{background:var(--blue);color:#fff}.secondary{background:#fff;border:1px solid var(--line)}.danger{background:var(--red);color:#fff}.spray{background:var(--purple);color:#fff}.success{background:var(--green);color:#fff}
+    .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.title{font-size:28px;font-weight:800}.sub{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.5}
+    .date-box,.card,.add-box{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius)}
+    .date-box{padding:14px 16px;min-width:220px}.date-box label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .grid-4,.toolbar,.history-toolbar,.add-grid,.add-grid-2,.meta,.btn-row,.quick-grid,.config-grid{display:grid;gap:10px}
+    .grid-4{grid-template-columns:repeat(4,1fr);margin-bottom:16px}.card{padding:16px}.stat-label{font-size:12px;color:var(--muted);margin-bottom:6px}.stat-value{font-size:32px;font-weight:800}
+    .section-title{font-size:20px;font-weight:800;margin-bottom:12px}.small{font-size:13px;color:var(--muted)}
+    .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(244,246,248,.96);padding:12px;backdrop-filter:blur(10px);max-width:1100px;margin:0 auto}
+    .tab-btn{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:12px 8px;font-size:15px;font-weight:700}.tab-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+    .hidden{display:none !important}.top-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.add-box{padding:16px;margin-bottom:14px}
+    .toolbar{grid-template-columns:1.5fr 1fr auto auto}.history-toolbar{grid-template-columns:1fr 180px 180px auto}.add-grid{grid-template-columns:1fr 1fr 1fr}.add-grid-2{grid-template-columns:1fr 1fr}.quick-grid{grid-template-columns:repeat(3,1fr)}.config-grid{grid-template-columns:repeat(2,1fr)}
+    .group-tags{display:flex;flex-wrap:wrap;gap:8px}.tag{padding:12px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:700}.tag.active{background:var(--blue);border-color:var(--blue);color:#fff}
+    .group-block{margin-top:18px}.group-name{font-size:14px;font-weight:800;color:var(--muted);margin:0 0 8px 4px}.plant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .plant-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}.plant-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.plant-name{font-size:18px;font-weight:800;line-height:1.25}
+    .badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;white-space:nowrap}.badge-due{background:#fee2e2;color:#991b1b}.badge-soon{background:#fef3c7;color:#92400e}.badge-wait{background:#e5e7eb;color:#374151}.badge-spray{background:#ede9fe;color:#5b21b6}
+    .meta{grid-template-columns:repeat(2,1fr);margin-bottom:10px}.meta-box{background:#f8fafc;border-radius:14px;padding:10px;font-size:13px;line-height:1.4}.meta-box b{display:block;font-size:15px;margin-top:3px;color:#111827}
+    .btn-row{grid-template-columns:repeat(3,1fr)}.list-card{margin-bottom:12px}.list-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.rule{font-size:13px;color:var(--muted);margin-top:4px}.note{font-size:13px;color:#4b5563;margin-top:4px}
+    .plant-actions{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:12px}.log-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:10px}.log-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .empty{background:#fff;border:1px dashed var(--line);border-radius:18px;padding:24px;text-align:center;color:var(--muted)}.pill{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700}
+    .stack{display:flex;flex-direction:column;gap:12px}.divider{height:1px;background:var(--line);margin:8px 0}
+    .modal-wrap{position:fixed;inset:0;background:rgba(15,23,42,.38);display:none;align-items:flex-end;justify-content:center;padding:12px;z-index:50}.modal-wrap.show{display:flex}.modal{width:min(860px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px 24px 18px 18px;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.modal-title{font-size:22px;font-weight:800}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.footer-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+    .check-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.check-item{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px}.check-item.off{opacity:.45}
+    @media (max-width:800px){body{padding:12px 12px 96px}.title{font-size:24px}.grid-4,.top-actions,.toolbar,.history-toolbar,.add-grid,.add-grid-2,.meta,.btn-row,.plant-actions,.modal-grid,.plant-grid,.quick-grid,.config-grid,.check-list{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(5,1fr);padding:10px}.tab-btn{font-size:13px;padding:10px 6px}}
   </style>
 </head>
 <body>
   <div class="top">
     <div>
       <div class="title">植物管理アプリ</div>
-      <div class="sub">水管理と薬剤散布を分けて管理。過去履歴の確認、あとから編集、株情報の編集に対応。</div>
+      <div class="sub">水・液体処理・薬剤を分けて管理。今日の候補、一括入力、履歴、植物管理、設定をiPhoneで扱いやすく。</div>
     </div>
     <div class="date-box">
       <label>判定日</label>
@@ -111,827 +53,271 @@
   </div>
 
   <div class="grid-4">
-    <div class="card"><div class="stat-label">今日やる株</div><div class="stat-value" id="statDue">0</div></div>
-    <div class="card"><div class="stat-label">明日目安</div><div class="stat-value" id="statSoon">0</div></div>
+    <div class="card"><div class="stat-label">今日やる水</div><div class="stat-value" id="statWaterDue">0</div></div>
+    <div class="card"><div class="stat-label">今日やる液体処理</div><div class="stat-value" id="statLiquidDue">0</div></div>
+    <div class="card"><div class="stat-label">今日やる薬剤</div><div class="stat-value" id="statSprayDue">0</div></div>
     <div class="card"><div class="stat-label">登録株数</div><div class="stat-value" id="statCount">0</div></div>
-    <div class="card"><div class="stat-label">履歴合計</div><div class="stat-value" id="statLogs">0</div></div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="today">今日の管理</button>
-    <button class="tab-btn" data-tab="plants">植物一覧</button>
-    <button class="tab-btn" data-tab="water-history">水履歴</button>
-    <button class="tab-btn" data-tab="spray-history">薬剤履歴</button>
-    <button class="tab-btn" data-tab="groups">グループ</button>
   </div>
 
   <section id="tab-today">
     <div class="card">
-      <div class="section-title">今日やる株</div>
-      <div class="top-actions">
-        <button class="primary" id="waterAllBtn">今日の候補をまとめて水</button>
-        <button class="secondary" id="hbAllBtn">今日の候補をHB</button>
-        <button class="secondary" id="rdAllBtn">今日の候補をRD</button>
-      </div>
+      <div class="section-title">今日</div>
       <div id="todayContent"></div>
+    </div>
+  </section>
+
+  <section id="tab-bulk" class="hidden">
+    <div class="card">
+      <div class="section-title">一括</div>
+      <div class="stack">
+        <div>
+          <div class="small" style="margin-bottom:8px;">グループを複数選択</div>
+          <div class="group-tags" id="bulkGroupTags"></div>
+        </div>
+        <div class="add-grid">
+          <select id="bulkMode">
+            <option value="water">水</option>
+            <option value="liquid">液体処理</option>
+            <option value="spray">薬剤</option>
+          </select>
+          <select id="bulkLiquidSelect"></select>
+          <select id="bulkSpraySelect"></select>
+        </div>
+        <div class="add-grid-2">
+          <input id="bulkDate" type="date" />
+          <input id="bulkMemo" placeholder="メモ・倍率など" />
+        </div>
+        <button class="primary" id="bulkPreviewBtn">完了</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-history" class="hidden">
+    <div class="card">
+      <div class="section-title">履歴</div>
+      <div class="toolbar">
+        <input id="historySearch" placeholder="株名・内容検索" />
+        <select id="historyTypeFilter"><option value="all">すべて</option><option value="water">水</option><option value="liquid">液体処理</option><option value="spray">薬剤</option></select>
+        <select id="historyPlantFilter"></select>
+        <button class="secondary" id="clearHistoryBtn">クリア</button>
+      </div>
+      <div id="historyContent"></div>
     </div>
   </section>
 
   <section id="tab-plants" class="hidden">
     <div class="add-box">
-      <div class="section-title">植物追加</div>
+      <div class="section-title">株追加</div>
       <div class="add-grid">
-        <input id="newName" placeholder="株名" />
-        <select id="newGroup"></select>
-        <input id="newInterval" type="number" placeholder="今の空き日数" />
+        <input id="newPlantName" placeholder="株名" />
+        <select id="newPlantGroup"></select>
+        <input id="newPlantNote" placeholder="メモ" />
       </div>
-      <div class="add-grid-2">
-        <input id="newRule" placeholder="ルールメモ 例: 5日目安" />
-        <input id="newNote" placeholder="補足メモ" />
+      <div class="divider"></div>
+      <div class="section-title" style="font-size:18px;">水設定</div>
+      <div class="add-grid">
+        <input id="newWaterInterval" type="number" placeholder="水の空き日数" />
+        <input id="newWaterLast" type="date" />
+        <div></div>
       </div>
+      <div class="section-title" style="font-size:18px;">液体処理設定</div>
+      <div id="newLiquidSettings" class="stack"></div>
+      <div class="section-title" style="font-size:18px;">薬剤設定</div>
+      <div id="newSpraySettings" class="stack"></div>
       <div style="margin-top:10px;"><button class="primary" id="addPlantBtn">追加する</button></div>
     </div>
-
     <div class="card">
-      <div class="section-title">植物一覧</div>
+      <div class="section-title">植物</div>
       <div class="toolbar">
-        <input id="searchInput" placeholder="株名・ルール・メモ検索" />
-        <select id="groupFilter"></select>
-        <label style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 12px;">
-          <input type="checkbox" id="dueOnlyCheck" style="width:auto;" />
-          <span>今日候補のみ</span>
-        </label>
-        <button class="secondary" id="clearSearchBtn">検索クリア</button>
+        <input id="plantSearch" placeholder="株名・メモ検索" />
+        <select id="plantGroupFilter"></select>
+        <label style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 12px;"><input type="checkbox" id="plantDueOnly" style="width:auto;" /><span>今日候補のみ</span></label>
+        <button class="secondary" id="clearPlantFilterBtn">クリア</button>
       </div>
       <div id="plantsContent"></div>
     </div>
   </section>
 
-  <section id="tab-water-history" class="hidden">
-    <div class="card">
-      <div class="section-title">水管理の履歴</div>
-      <div class="history-toolbar">
-        <input id="waterHistorySearch" placeholder="株名・内容検索" />
-        <select id="waterHistoryTypeFilter">
-          <option value="all">水 / HB / RD すべて</option>
-          <option value="水">水</option>
-          <option value="HB">HB</option>
-          <option value="RD">RD</option>
-        </select>
-        <select id="waterHistoryPlantFilter"></select>
-        <button class="secondary" id="waterHistoryClearBtn">絞り込みクリア</button>
+  <section id="tab-settings" class="hidden">
+    <div class="config-grid">
+      <div class="card">
+        <div class="section-title">グループ設定</div>
+        <div class="add-grid-2">
+          <input id="newGroupName" placeholder="新しいグループ名" />
+          <button class="primary" id="addGroupBtn">グループ追加</button>
+        </div>
+        <div id="groupSettingsList" class="stack" style="margin-top:12px;"></div>
       </div>
-      <div id="waterHistoryContent"></div>
+      <div class="card">
+        <div class="section-title">液体処理マスター</div>
+        <div class="add-grid-2">
+          <input id="newLiquidName" placeholder="液体処理名" />
+          <button class="primary" id="addLiquidBtn">追加</button>
+        </div>
+        <div id="liquidMasterList" class="stack" style="margin-top:12px;"></div>
+        <div class="divider"></div>
+        <div class="section-title">薬剤マスター</div>
+        <div class="add-grid-2">
+          <input id="newSprayName" placeholder="薬剤名" />
+          <button class="primary" id="addSprayMasterBtn">追加</button>
+        </div>
+        <div class="add-grid-2" style="margin-top:10px;">
+          <input id="newSprayDefaultDilution" placeholder="初期倍率" />
+          <div></div>
+        </div>
+        <div id="sprayMasterList" class="stack" style="margin-top:12px;"></div>
+      </div>
     </div>
   </section>
 
-  <section id="tab-spray-history" class="hidden">
-    <div class="add-box">
-      <div class="section-title">薬剤散布を記録</div>
-      <div class="add-grid">
-        <input id="sprayDate" type="date" />
-        <select id="sprayPlant"></select>
-        <input id="sprayMedicine" placeholder="薬剤名 例: ベンレート" />
-      </div>
-      <div class="add-grid-2">
-        <input id="sprayDilution" placeholder="倍率・量 例: 2000倍 / 2ml" />
-        <input id="sprayMemo" placeholder="補足メモ 例: ダイン使用" />
-      </div>
-      <div style="margin-top:10px;"><button class="spray" id="addSprayBtn">薬剤履歴を追加</button></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">薬剤散布の履歴</div>
-      <div class="history-toolbar">
-        <input id="sprayHistorySearch" placeholder="株名・薬剤名・メモ検索" />
-        <input id="sprayHistoryMedicineFilter" placeholder="薬剤名で絞る" />
-        <select id="sprayHistoryPlantFilter"></select>
-        <button class="secondary" id="sprayHistoryClearBtn">絞り込みクリア</button>
-      </div>
-      <div id="sprayHistoryContent"></div>
-    </div>
-  </section>
-
-  <section id="tab-groups" class="hidden">
-    <div id="groupsContent"></div>
-  </section>
-
-  <div class="modal-wrap" id="modalWrap">
-    <div class="modal">
-      <div class="modal-head">
-        <div class="modal-title" id="modalTitle">編集</div>
-        <button class="secondary" id="closeModalBtn">閉じる</button>
-      </div>
-      <div id="modalBody"></div>
-    </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="today">今日</button>
+    <button class="tab-btn" data-tab="bulk">一括</button>
+    <button class="tab-btn" data-tab="history">履歴</button>
+    <button class="tab-btn" data-tab="plants">植物</button>
+    <button class="tab-btn" data-tab="settings">設定</button>
   </div>
 
+  <div class="modal-wrap" id="modalWrap"><div class="modal"><div class="modal-head"><div class="modal-title" id="modalTitle">確認</div><button class="secondary" id="closeModalBtn">閉じる</button></div><div id="modalBody"></div></div></div>
+
   <script>
-    const groupLabels = {
-      smallagave: "smallagave",
-      mediumagave: "mediumagave",
-      agave: "agave",
-      wildagave: "wildagave",
-      cactus: "cactus",
-      codex: "codex",
-      euphorbia: "euphorbia",
-      other: "Other"
+    const defaults = {
+      groups:[
+        {id:'smallagave',name:'smallagave'},{id:'mediumagave',name:'mediumagave'},{id:'agave',name:'agave'},{id:'wildagave',name:'wildagave'},{id:'cactus',name:'cactus'},{id:'codex',name:'codex'},{id:'euphorbia',name:'euphorbia'},{id:'other',name:'other'}
+      ],
+      liquidMasters:[{id:'hb',name:'HB'},{id:'rd',name:'RD'}],
+      sprayMasters:[{id:'benlate',name:'ベンレート',defaultDilution:'2000倍'},{id:'daconil',name:'ダコニール',defaultDilution:'1000倍'}],
+      groupSettings:{
+        smallagave:{water:3,liquid:{hb:7,rd:14},spray:{benlate:30,daconil:21}},
+        mediumagave:{water:7,liquid:{hb:14,rd:21},spray:{benlate:30,daconil:21}},
+        agave:{water:10,liquid:{hb:14,rd:21},spray:{benlate:30,daconil:21}},
+        wildagave:{water:14,liquid:{hb:21,rd:30},spray:{benlate:45,daconil:30}},
+        cactus:{water:20,liquid:{hb:30,rd:40},spray:{benlate:45,daconil:30}},
+        codex:{water:10,liquid:{hb:20,rd:30},spray:{benlate:45,daconil:30}},
+        euphorbia:{water:14,liquid:{hb:21,rd:30},spray:{benlate:45,daconil:30}},
+        other:{water:7,liquid:{hb:14,rd:21},spray:{benlate:30,daconil:21}}
+      },
+      plants:[
+        {id:1,name:'GG compacta',groupId:'mediumagave',note:'',water:{interval:7,last:'2026-03-10'},liquid:{hb:{interval:14,last:'2026-03-10'},rd:{interval:21,last:'2026-03-10'}},spray:{benlate:{interval:30,last:'2026-03-01'}}},
+        {id:2,name:'萬代厳竜',groupId:'mediumagave',note:'',water:{interval:7,last:'2026-03-10'},liquid:{hb:{interval:14,last:'2026-03-10'},rd:{interval:21,last:'2026-03-10'}},spray:{benlate:{interval:30,last:'2026-03-01'}}},
+        {id:3,name:'FO076',groupId:'smallagave',note:'',water:{interval:4,last:'2026-03-10'},liquid:{hb:{interval:9,last:'2026-03-10'},rd:{interval:14,last:'2026-03-10'}},spray:{benlate:{interval:30,last:'2026-03-01'}}},
+        {id:4,name:'ripple effect',groupId:'smallagave',note:'タイミングずらすことあり',water:{interval:3,last:'2026-03-10'},liquid:{hb:{interval:7,last:'2026-03-10'},rd:{interval:14,last:'2026-03-10'}},spray:{benlate:{interval:30,last:'2026-03-01'}}}
+      ],
+      history:[]
     };
 
-    const defaultPlants = [
-      { id: 1, name: "子株", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "子株3", note: "seaser redform / italia noname / 海王" },
-      { id: 2, name: "GG compacta", group: "mediumagave", interval: 7, lastWatered: "2026-03-10", rule: "7日目安", note: "" },
-      { id: 3, name: "萬代厳竜", group: "mediumagave", interval: 7, lastWatered: "2026-03-10", rule: "7日目安", note: "" },
-      { id: 4, name: "ホリダ", group: "mediumagave", interval: 7, lastWatered: "2026-03-10", rule: "7日目安", note: "" },
-      { id: 5, name: "spawn", group: "mediumagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
-      { id: 6, name: "orca", group: "smallagave", interval: 2, lastWatered: "2026-03-10", rule: "2日目安", note: "" },
-      { id: 7, name: "ripple effect", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "仮で3日", note: "" },
-      { id: 8, name: "FO076", group: "smallagave", interval: 4, lastWatered: "2026-03-10", rule: "4日目安", note: "" },
-      { id: 9, name: "CJ-1", group: "smallagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
-      { id: 10, name: "ゴリ猫", group: "smallagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
-      { id: 11, name: "redcat", group: "smallagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
-      { id: 12, name: "オアハカ", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "3日目安", note: "" },
-      { id: 13, name: "イタリア noname", group: "smallagave", interval: 2, lastWatered: "2026-03-10", rule: "2日目安", note: "" },
-      { id: 14, name: "crab", group: "smallagave", interval: 2, lastWatered: "2026-03-10", rule: "2日目安", note: "" },
-      { id: 15, name: "野火", group: "smallagave", interval: 2, lastWatered: "2026-03-10", rule: "2日目安", note: "" },
-      { id: 16, name: "姫巌龍", group: "smallagave", interval: 2, lastWatered: "2026-03-10", rule: "2日目安", note: "" },
-      { id: 17, name: "yj白鯨", group: "smallagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
-      { id: 18, name: "国産白鯨", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "仮で3日", note: "" },
-      { id: 19, name: "オアハカドワーフ", group: "smallagave", interval: 3, lastWatered: "2026-03-10", rule: "仮で3日", note: "" },
-      { id: 20, name: "斑入りアガベ", group: "smallagave", interval: 5, lastWatered: "2026-03-10", rule: "5日目安", note: "" },
-      { id: 21, name: "ディッキア", group: "wildagave", interval: 20, lastWatered: "2026-03-10", rule: "20日目安", note: "" },
-      { id: 22, name: "フェロシオール", group: "cactus", interval: 30, lastWatered: "2026-02-04", rule: "30日目安", note: "" },
-      { id: 23, name: "金鯱", group: "cactus", interval: 30, lastWatered: "2026-02-04", rule: "30日目安", note: "" },
-      { id: 24, name: "守金魔天竜", group: "cactus", interval: 30, lastWatered: "2026-02-04", rule: "30日目安", note: "" },
-      { id: 25, name: "ペクチニフェラ", group: "agave", interval: 30, lastWatered: "2026-02-04", rule: "30日目安", note: "" },
-      { id: 26, name: "ロフォフォラ", group: "cactus", interval: 14, lastWatered: "2026-02-04", rule: "14日仮", note: "" },
-      { id: 27, name: "疣銀冠", group: "cactus", interval: 14, lastWatered: "2026-02-04", rule: "14日仮", note: "" },
-      { id: 28, name: "オベサ", group: "euphorbia", interval: 14, lastWatered: "2026-02-04", rule: "14日目安", note: "" },
-      { id: 29, name: "hyoronaga", group: "cactus", interval: 30, lastWatered: "2026-02-04", rule: "30日目安", note: "" },
-      { id: 30, name: "センナ", group: "codex", interval: 5, lastWatered: "2026-02-04", rule: "5日仮", note: "" },
-      { id: 31, name: "二ノ宮グラキリス", group: "codex", interval: 7, lastWatered: "2026-02-04", rule: "7日仮", note: "" },
-      { id: 32, name: "グラキリス", group: "codex", interval: 7, lastWatered: "2026-02-04", rule: "7日仮", note: "" },
-      { id: 33, name: "ブーファンディスティカ", group: "codex", interval: 20, lastWatered: "2026-02-04", rule: "20日目安", note: "" },
-      { id: 34, name: "二ノ宮ブーファンディスティカ", group: "codex", interval: 20, lastWatered: "2026-02-04", rule: "20日目安", note: "" },
-      { id: 35, name: "princspis", group: "codex", interval: 20, lastWatered: "2026-02-04", rule: "20日目安", note: "" },
-      { id: 36, name: "恵比寿", group: "agave", interval: 10, lastWatered: "2026-02-04", rule: "10日目安", note: "" },
-      { id: 37, name: "foetida", group: "agave", interval: 10, lastWatered: "2026-02-04", rule: "10日仮", note: "" },
-      { id: 38, name: "亀甲竜", group: "codex", interval: 10, lastWatered: "2026-02-04", rule: "10日仮", note: "" },
-      { id: 39, name: "イネルミス", group: "cactus", interval: 10, lastWatered: "2026-02-04", rule: "10日目安", note: "" },
-      { id: 40, name: "エノプラ", group: "cactus", interval: 10, lastWatered: "2026-02-04", rule: "10日目安", note: "" },
-      { id: 41, name: "ホリダブルースノー", group: "mediumagave", interval: 20, lastWatered: "2026-02-04", rule: "20日目安", note: "" }
-    ];
+    const storageKeys={groups:'pm_groups',liquid:'pm_liquid_masters',spray:'pm_spray_masters',groupSettings:'pm_group_settings',plants:'pm_plants',history:'pm_history',judgeDate:'pm_judge_date'};
+    const load=(k,f)=>{try{const raw=localStorage.getItem(k);return raw?JSON.parse(raw):f}catch(e){return f}};
+    let groups=load(storageKeys.groups,defaults.groups);
+    let liquidMasters=load(storageKeys.liquid,defaults.liquidMasters);
+    let sprayMasters=load(storageKeys.spray,defaults.sprayMasters);
+    let groupSettings=load(storageKeys.groupSettings,defaults.groupSettings);
+    let plants=load(storageKeys.plants,defaults.plants);
+    let history=load(storageKeys.history,defaults.history);
+    let judgeDate=localStorage.getItem(storageKeys.judgeDate)||new Date().toISOString().slice(0,10);
+    let bulkSelectedGroups=[];
 
-    const defaultWaterLogs = [
-      { id: 1, date: "2026-03-10", plantId: 1, type: "水", memo: "" },
-      { id: 2, date: "2026-03-10", plantId: 2, type: "水", memo: "" },
-      { id: 3, date: "2026-03-10", plantId: 3, type: "水", memo: "" },
-      { id: 4, date: "2026-03-10", plantId: 4, type: "水", memo: "" },
-      { id: 5, date: "2026-03-10", plantId: 5, type: "HB", memo: "" }
-    ];
+    const $ = (id)=>document.getElementById(id);
+    const tabs=document.querySelectorAll('.tab-btn');
+    const sections={today:$('tab-today'),bulk:$('tab-bulk'),history:$('tab-history'),plants:$('tab-plants'),settings:$('tab-settings')};
 
-    function loadJSON(key, fallback){
-      try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      } catch(e){
-        return fallback;
-      }
-    }
+    function saveAll(){localStorage.setItem(storageKeys.groups,JSON.stringify(groups));localStorage.setItem(storageKeys.liquid,JSON.stringify(liquidMasters));localStorage.setItem(storageKeys.spray,JSON.stringify(sprayMasters));localStorage.setItem(storageKeys.groupSettings,JSON.stringify(groupSettings));localStorage.setItem(storageKeys.plants,JSON.stringify(plants));localStorage.setItem(storageKeys.history,JSON.stringify(history));localStorage.setItem(storageKeys.judgeDate,judgeDate)}
+    function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
+    function daysBetween(a,b){const d1=new Date(a),d2=new Date(b);d1.setHours(0,0,0,0);d2.setHours(0,0,0,0);return Math.floor((d2-d1)/(1000*60*60*24))}
+    function addDays(dateStr,days){const d=new Date(dateStr);d.setDate(d.getDate()+Number(days));return d.toISOString().slice(0,10)}
+    function groupName(id){const g=groups.find(x=>x.id===id);return g?g.name:id}
+    function plantName(id){const p=plants.find(x=>x.id===id);return p?p.name:'不明な株'}
+    function openModal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modalWrap').classList.add('show')}
+    function closeModal(){$('modalWrap').classList.remove('show');$('modalBody').innerHTML=''}
 
-    // 既存データを引き継ぐ
-    const savedPlants = loadJSON("plantManagerPlants", null);
-    const savedOldLogs = loadJSON("plantManagerLogs", null); // 旧水履歴キー
-    const savedWaterLogs = loadJSON("plantManagerWaterLogs", null); // 新水履歴キー
-    const savedSprayLogs = loadJSON("plantManagerSprayLogs", null);
-    const savedJudgeDate = localStorage.getItem("plantManagerJudgeDate");
+    function ensurePlantStructure(plant){plant.water=plant.water||{interval:getGroupWaterDefault(plant.groupId),last:judgeDate};plant.liquid=plant.liquid||{};plant.spray=plant.spray||{};liquidMasters.forEach(m=>{if(!plant.liquid[m.id]) plant.liquid[m.id]={interval:getGroupLiquidDefault(plant.groupId,m.id),last:plant.water.last}});sprayMasters.forEach(m=>{if(!plant.spray[m.id]) plant.spray[m.id]={interval:getGroupSprayDefault(plant.groupId,m.id),last:plant.water.last}})}
+    plants.forEach(ensurePlantStructure);
 
-    let plants = savedPlants || defaultPlants;
-    let waterLogs = savedWaterLogs || savedOldLogs || defaultWaterLogs;
-    let sprayLogs = savedSprayLogs || [];
-    let judgeDate = savedJudgeDate || new Date().toISOString().slice(0,10);
+    function getGroupWaterDefault(groupId){return groupSettings[groupId]?.water ?? 7}
+    function getGroupLiquidDefault(groupId,liquidId){return groupSettings[groupId]?.liquid?.[liquidId] ?? 14}
+    function getGroupSprayDefault(groupId,sprayId){return groupSettings[groupId]?.spray?.[sprayId] ?? 30}
+    function status(last,interval,label){const elapsed=daysBetween(last,judgeDate),dueIn=interval-elapsed;if(dueIn<=0)return{label:`今日${label}`,cls:'badge-due',elapsed,dueIn};if(dueIn===1)return{label:`明日${label}`,cls:'badge-soon',elapsed,dueIn};return{label:`${label}待機`,cls:'badge-wait',elapsed,dueIn}}
 
-    const tabs = document.querySelectorAll(".tab-btn");
-    const sections = {
-      today: document.getElementById("tab-today"),
-      plants: document.getElementById("tab-plants"),
-      "water-history": document.getElementById("tab-water-history"),
-      "spray-history": document.getElementById("tab-spray-history"),
-      groups: document.getElementById("tab-groups")
-    };
+    function addHistory(entry){history.unshift({id:Date.now()+Math.random(),...entry})}
+    function applyActionToPlant(plant,mode,selectedId,date,memo){if(mode==='water'){plant.water.last=date;addHistory({date,plantId:plant.id,category:'water',label:'水',memo})}
+      if(mode==='liquid'){plant.liquid[selectedId].last=date;const label=liquidMasters.find(x=>x.id===selectedId)?.name||selectedId;addHistory({date,plantId:plant.id,category:'liquid',subId:selectedId,label,memo})}
+      if(mode==='spray'){plant.spray[selectedId].last=date;const master=sprayMasters.find(x=>x.id===selectedId);addHistory({date,plantId:plant.id,category:'spray',subId:selectedId,label:master?.name||selectedId,memo})}}
 
-    const judgeDateInput = document.getElementById("judgeDate");
-    const statDue = document.getElementById("statDue");
-    const statSoon = document.getElementById("statSoon");
-    const statCount = document.getElementById("statCount");
-    const statLogs = document.getElementById("statLogs");
-    const todayContent = document.getElementById("todayContent");
-    const plantsContent = document.getElementById("plantsContent");
-    const groupsContent = document.getElementById("groupsContent");
-    const waterHistoryContent = document.getElementById("waterHistoryContent");
-    const sprayHistoryContent = document.getElementById("sprayHistoryContent");
-
-    const newName = document.getElementById("newName");
-    const newGroup = document.getElementById("newGroup");
-    const newInterval = document.getElementById("newInterval");
-    const newRule = document.getElementById("newRule");
-    const newNote = document.getElementById("newNote");
-
-    const searchInput = document.getElementById("searchInput");
-    const groupFilter = document.getElementById("groupFilter");
-    const dueOnlyCheck = document.getElementById("dueOnlyCheck");
-
-    const waterHistorySearch = document.getElementById("waterHistorySearch");
-    const waterHistoryTypeFilter = document.getElementById("waterHistoryTypeFilter");
-    const waterHistoryPlantFilter = document.getElementById("waterHistoryPlantFilter");
-
-    const sprayDate = document.getElementById("sprayDate");
-    const sprayPlant = document.getElementById("sprayPlant");
-    const sprayMedicine = document.getElementById("sprayMedicine");
-    const sprayDilution = document.getElementById("sprayDilution");
-    const sprayMemo = document.getElementById("sprayMemo");
-    const sprayHistorySearch = document.getElementById("sprayHistorySearch");
-    const sprayHistoryMedicineFilter = document.getElementById("sprayHistoryMedicineFilter");
-    const sprayHistoryPlantFilter = document.getElementById("sprayHistoryPlantFilter");
-
-    const modalWrap = document.getElementById("modalWrap");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalBody = document.getElementById("modalBody");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-
-    function saveData(){
-      localStorage.setItem("plantManagerPlants", JSON.stringify(plants));
-      localStorage.setItem("plantManagerWaterLogs", JSON.stringify(waterLogs));
-      localStorage.setItem("plantManagerLogs", JSON.stringify(waterLogs)); // 旧キーも更新
-      localStorage.setItem("plantManagerSprayLogs", JSON.stringify(sprayLogs));
-      localStorage.setItem("plantManagerJudgeDate", judgeDate);
-    }
-
-    function daysBetween(a, b){
-      const ms = 1000*60*60*24;
-      const d1 = new Date(a);
-      const d2 = new Date(b);
-      d1.setHours(0,0,0,0);
-      d2.setHours(0,0,0,0);
-      return Math.floor((d2 - d1) / ms);
-    }
-
-    function addDays(dateStr, days){
-      const d = new Date(dateStr);
-      d.setDate(d.getDate() + Number(days));
-      return d.toISOString().slice(0,10);
-    }
-
-    function statusForPlant(plant){
-      const elapsed = daysBetween(plant.lastWatered, judgeDate);
-      const dueIn = plant.interval - elapsed;
-      if (dueIn <= 0) return { label: "今日やる", cls: "badge-due", elapsed, dueIn };
-      if (dueIn === 1) return { label: "明日目安", cls: "badge-soon", elapsed, dueIn };
-      return { label: "待機", cls: "badge-wait", elapsed, dueIn };
-    }
-
-    function plantNameById(id){
-      const plant = plants.find(p => p.id === id);
-      return plant ? plant.name : "不明な株";
-    }
-
-    function buildSelectOptions(selectEl, includeAll=false, allLabel="すべて"){
-      selectEl.innerHTML = "";
-      if (includeAll){
-        const op = document.createElement("option");
-        op.value = "all";
-        op.textContent = allLabel;
-        selectEl.appendChild(op);
-      }
-      plants.forEach(p => {
-        const op = document.createElement("option");
-        op.value = String(p.id);
-        op.textContent = p.name;
-        selectEl.appendChild(op);
-      });
-    }
-
-    function buildGroupOptions(selectEl, includeAll=false){
-      selectEl.innerHTML = "";
-      if (includeAll){
-        const op = document.createElement("option");
-        op.value = "all";
-        op.textContent = "すべて";
-        selectEl.appendChild(op);
-      }
-      Object.entries(groupLabels).forEach(([key, label]) => {
-        const op = document.createElement("option");
-        op.value = key;
-        op.textContent = label;
-        selectEl.appendChild(op);
-      });
-    }
-
-    function escapeHtml(text){
-      return String(text ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function openModal(title, html){
-      modalTitle.textContent = title;
-      modalBody.innerHTML = html;
-      modalWrap.classList.add("show");
-    }
-
-    function closeModal(){
-      modalWrap.classList.remove("show");
-      modalBody.innerHTML = "";
-    }
-
-    function markPlant(id, type){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      plant.lastWatered = judgeDate;
-      waterLogs.unshift({ id: Date.now() + Math.random(), date: judgeDate, plantId: id, type, memo: "" });
-      saveData();
-      render();
-    }
-
-    function markAllDue(type){
-      const duePlants = plants.filter(p => statusForPlant(p).dueIn <= 0);
-      duePlants.forEach(p => {
-        p.lastWatered = judgeDate;
-        waterLogs.unshift({ id: Date.now() + Math.random(), date: judgeDate, plantId: p.id, type, memo: "" });
-      });
-      saveData();
-      render();
-    }
-
-    function movePlant(id, direction){
-      const idx = plants.findIndex(p => p.id === id);
-      if (idx < 0) return;
-      const newIdx = direction === "up" ? idx - 1 : idx + 1;
-      if (newIdx < 0 || newIdx >= plants.length) return;
-      const temp = plants[idx];
-      plants[idx] = plants[newIdx];
-      plants[newIdx] = temp;
-      saveData();
-      render();
-    }
-
-    function deletePlant(id){
-      if (!confirm("この株を削除する？ 水履歴と薬剤履歴も一緒に消える。")) return;
-      plants = plants.filter(p => p.id !== id);
-      waterLogs = waterLogs.filter(l => l.plantId !== id);
-      sprayLogs = sprayLogs.filter(l => l.plantId !== id);
-      saveData();
-      render();
-    }
-
-    function addPlant(){
-      const name = newName.value.trim();
-      if (!name) return alert("株名を入れて");
-      plants.push({
-        id: Date.now(),
-        name,
-        group: newGroup.value,
-        interval: Number(newInterval.value || 7),
-        lastWatered: judgeDate,
-        rule: newRule.value.trim(),
-        note: newNote.value.trim()
-      });
-      newName.value = "";
-      newInterval.value = "";
-      newRule.value = "";
-      newNote.value = "";
-      saveData();
-      render();
-    }
-
-    function addSprayLog(){
-      if (!sprayPlant.value) return alert("株を選んで");
-      if (!sprayMedicine.value.trim()) return alert("薬剤名を入れて");
-      sprayLogs.unshift({
-        id: Date.now() + Math.random(),
-        date: sprayDate.value || judgeDate,
-        plantId: Number(sprayPlant.value),
-        medicine: sprayMedicine.value.trim(),
-        dilution: sprayDilution.value.trim(),
-        memo: sprayMemo.value.trim()
-      });
-      sprayMedicine.value = "";
-      sprayDilution.value = "";
-      sprayMemo.value = "";
-      saveData();
-      render();
-    }
-
-    function updateInterval(id, value){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      plant.interval = Number(value || 0);
-      saveData();
-      render();
-    }
-
-    function updateGroup(id, value){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      plant.group = value;
-      saveData();
-      render();
-    }
-
-    function openPlantEdit(id){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      openModal("株情報を編集", `
-        <div class="modal-grid">
-          <div><label>株名</label><input id="editPlantName" value="${escapeHtml(plant.name)}"></div>
-          <div><label>グループ</label><select id="editPlantGroup">${Object.entries(groupLabels).map(([key, label]) => `<option value="${key}" ${plant.group===key?"selected":""}>${label}</option>`).join("")}</select></div>
-          <div><label>今の空き日数</label><input id="editPlantInterval" type="number" value="${plant.interval}"></div>
-          <div><label>最終給水日</label><input id="editPlantLastWatered" type="date" value="${plant.lastWatered}"></div>
-        </div>
-        <div style="margin-bottom:10px;"><label>ルールメモ</label><input id="editPlantRule" value="${escapeHtml(plant.rule || "")}"></div>
-        <div><label>補足メモ</label><textarea id="editPlantNote">${escapeHtml(plant.note || "")}</textarea></div>
-        <div class="footer-actions">
-          <button class="secondary" onclick="closeModal()">キャンセル</button>
-          <button class="primary" onclick="savePlantEdit(${id})">保存</button>
-        </div>
-      `);
-    }
-
-    function savePlantEdit(id){
-      const plant = plants.find(p => p.id === id);
-      if (!plant) return;
-      plant.name = document.getElementById("editPlantName").value.trim() || plant.name;
-      plant.group = document.getElementById("editPlantGroup").value;
-      plant.interval = Number(document.getElementById("editPlantInterval").value || plant.interval);
-      plant.lastWatered = document.getElementById("editPlantLastWatered").value || plant.lastWatered;
-      plant.rule = document.getElementById("editPlantRule").value.trim();
-      plant.note = document.getElementById("editPlantNote").value.trim();
-      saveData();
-      closeModal();
-      render();
-    }
-
-    function openWaterLogEdit(id){
-      const log = waterLogs.find(l => l.id === id);
-      if (!log) return;
-      openModal("水履歴を編集", `
-        <div class="modal-grid">
-          <div><label>日付</label><input id="editWaterDate" type="date" value="${log.date}"></div>
-          <div><label>株</label><select id="editWaterPlant">${plants.map(p => `<option value="${p.id}" ${p.id===log.plantId?"selected":""}>${escapeHtml(p.name)}</option>`).join("")}</select></div>
-          <div><label>内容</label><select id="editWaterType"><option value="水" ${log.type==='水'?'selected':''}>水</option><option value="HB" ${log.type==='HB'?'selected':''}>HB</option><option value="RD" ${log.type==='RD'?'selected':''}>RD</option></select></div>
-          <div><label>メモ</label><input id="editWaterMemo" value="${escapeHtml(log.memo || "")}"></div>
-        </div>
-        <div class="footer-actions">
-          <button class="danger" onclick="deleteWaterLog(${id})">削除</button>
-          <button class="secondary" onclick="closeModal()">キャンセル</button>
-          <button class="primary" onclick="saveWaterLogEdit(${id})">保存</button>
-        </div>
-      `);
-    }
-
-    function saveWaterLogEdit(id){
-      const log = waterLogs.find(l => l.id === id);
-      if (!log) return;
-      const oldPlantId = log.plantId;
-      const oldDate = log.date;
-      log.date = document.getElementById("editWaterDate").value || log.date;
-      log.plantId = Number(document.getElementById("editWaterPlant").value);
-      log.type = document.getElementById("editWaterType").value;
-      log.memo = document.getElementById("editWaterMemo").value.trim();
-      // 最終給水日を履歴全体から再計算
-      recalcPlantLastWatered(oldPlantId);
-      recalcPlantLastWatered(log.plantId);
-      saveData();
-      closeModal();
-      render();
-    }
-
-    function deleteWaterLog(id){
-      const log = waterLogs.find(l => l.id === id);
-      if (!log) return;
-      if (!confirm("この水履歴を削除する？")) return;
-      const plantId = log.plantId;
-      waterLogs = waterLogs.filter(l => l.id !== id);
-      recalcPlantLastWatered(plantId);
-      saveData();
-      closeModal();
-      render();
-    }
-
-    function recalcPlantLastWatered(plantId){
-      const plant = plants.find(p => p.id === plantId);
-      if (!plant) return;
-      const related = waterLogs.filter(l => l.plantId === plantId).sort((a,b) => String(b.date).localeCompare(String(a.date)));
-      if (related.length) plant.lastWatered = related[0].date;
-    }
-
-    function openSprayLogEdit(id){
-      const log = sprayLogs.find(l => l.id === id);
-      if (!log) return;
-      openModal("薬剤履歴を編集", `
-        <div class="modal-grid">
-          <div><label>日付</label><input id="editSprayDate" type="date" value="${log.date}"></div>
-          <div><label>株</label><select id="editSprayPlant">${plants.map(p => `<option value="${p.id}" ${p.id===log.plantId?"selected":""}>${escapeHtml(p.name)}</option>`).join("")}</select></div>
-          <div><label>薬剤名</label><input id="editSprayMedicine" value="${escapeHtml(log.medicine || "")}"></div>
-          <div><label>倍率・量</label><input id="editSprayDilution" value="${escapeHtml(log.dilution || "")}"></div>
-        </div>
-        <div><label>メモ</label><textarea id="editSprayMemo">${escapeHtml(log.memo || "")}</textarea></div>
-        <div class="footer-actions">
-          <button class="danger" onclick="deleteSprayLog(${id})">削除</button>
-          <button class="secondary" onclick="closeModal()">キャンセル</button>
-          <button class="spray" onclick="saveSprayLogEdit(${id})">保存</button>
-        </div>
-      `);
-    }
-
-    function saveSprayLogEdit(id){
-      const log = sprayLogs.find(l => l.id === id);
-      if (!log) return;
-      log.date = document.getElementById("editSprayDate").value || log.date;
-      log.plantId = Number(document.getElementById("editSprayPlant").value);
-      log.medicine = document.getElementById("editSprayMedicine").value.trim();
-      log.dilution = document.getElementById("editSprayDilution").value.trim();
-      log.memo = document.getElementById("editSprayMemo").value.trim();
-      saveData();
-      closeModal();
-      render();
-    }
-
-    function deleteSprayLog(id){
-      if (!confirm("この薬剤履歴を削除する？")) return;
-      sprayLogs = sprayLogs.filter(l => l.id !== id);
-      saveData();
-      closeModal();
-      render();
-    }
-
-    function renderStats(){
-      const dueToday = plants.filter(p => statusForPlant(p).dueIn <= 0).length;
-      const soon = plants.filter(p => statusForPlant(p).dueIn === 1).length;
-      statDue.textContent = dueToday;
-      statSoon.textContent = soon;
-      statCount.textContent = plants.length;
-      statLogs.textContent = waterLogs.length + sprayLogs.length;
-    }
+    function renderStats(){const waterDue=plants.filter(p=>status(p.water.last,p.water.interval,'水').dueIn<=0).length;let liquidDue=0,sprayDue=0;plants.forEach(p=>{liquidMasters.forEach(m=>{if(status(p.liquid[m.id].last,p.liquid[m.id].interval,m.name).dueIn<=0) liquidDue++});sprayMasters.forEach(m=>{if(status(p.spray[m.id].last,p.spray[m.id].interval,m.name).dueIn<=0) sprayDue++})});$('statWaterDue').textContent=waterDue;$('statLiquidDue').textContent=liquidDue;$('statSprayDue').textContent=sprayDue;$('statCount').textContent=plants.length}
 
     function renderToday(){
-      const grouped = {};
-      Object.keys(groupLabels).forEach(g => grouped[g] = []);
-      plants.forEach(p => {
-        const st = statusForPlant(p);
-        if (st.dueIn <= 0) grouped[p.group].push({ ...p, st });
-      });
-      let html = "";
-      const hasAny = Object.values(grouped).some(arr => arr.length > 0);
-      if (!hasAny){
-        todayContent.innerHTML = '<div class="empty">今日は水やり候補なし</div>';
-        return;
-      }
-      Object.entries(grouped).forEach(([groupKey, items]) => {
-        if (!items.length) return;
-        html += `<div class="group-block"><div class="group-name">${groupLabels[groupKey]}</div><div class="plant-grid">`;
-        items.forEach(p => {
-          html += `
-            <div class="plant-card">
-              <div class="plant-top">
-                <div>
-                  <div class="plant-name">${escapeHtml(p.name)}</div>
-                  <div class="rule">${escapeHtml(p.rule || "")}</div>
-                </div>
-                <span class="badge ${p.st.cls}">${p.st.label}</span>
-              </div>
-              <div class="meta">
-                <div class="meta-box">前回<b>${p.lastWatered}</b></div>
-                <div class="meta-box">経過<b>${p.st.elapsed}日</b></div>
-                <div class="meta-box">今の空き日数<b>${p.interval}日</b></div>
-                <div class="meta-box">次回目安<b>${addDays(p.lastWatered, p.interval)}</b></div>
-              </div>
-              <div class="btn-row">
-                <button class="primary" onclick="markPlant(${p.id}, '水')">水</button>
-                <button class="secondary" onclick="markPlant(${p.id}, 'HB')">HB</button>
-                <button class="secondary" onclick="markPlant(${p.id}, 'RD')">RD</button>
-              </div>
-            </div>`;
-        });
-        html += `</div></div>`;
-      });
-      todayContent.innerHTML = html;
+      const waterItems=[], liquidItems=[], sprayItems=[];
+      plants.forEach(p=>{const ws=status(p.water.last,p.water.interval,'水');if(ws.dueIn<=0) waterItems.push({plant:p,st:ws,label:'水',interval:p.water.interval,last:p.water.last});liquidMasters.forEach(m=>{const s=status(p.liquid[m.id].last,p.liquid[m.id].interval,m.name);if(s.dueIn<=0) liquidItems.push({plant:p,st:s,label:m.name,interval:p.liquid[m.id].interval,last:p.liquid[m.id].last})});sprayMasters.forEach(m=>{const s=status(p.spray[m.id].last,p.spray[m.id].interval,m.name);if(s.dueIn<=0) sprayItems.push({plant:p,st:s,label:m.name,interval:p.spray[m.id].interval,last:p.spray[m.id].last})})});
+      function block(title,items,kind){return `<div class='group-block'><div class='group-name'>${title}</div>${items.length?`<div class='plant-grid'>${items.map(i=>`<div class='plant-card'><div class='plant-top'><div><div class='plant-name'>${esc(i.plant.name)}</div><div class='rule'>${groupName(i.plant.groupId)}</div><div class='small'><span class='pill'>${esc(i.label)}</span></div></div><span class='badge ${i.st.cls}'>${i.st.label}</span></div><div class='meta'><div class='meta-box'>前回<b>${i.last}</b></div><div class='meta-box'>経過<b>${i.st.elapsed}日</b></div><div class='meta-box'>空き日数<b>${i.interval}日</b></div><div class='meta-box'>次回目安<b>${addDays(i.last,i.interval)}</b></div></div><div class='btn-row'>${kind==='water'?`<button class='primary' onclick='quickApply(${i.plant.id},"water")'>記録</button><button class='secondary' onclick='openPlantEdit(${i.plant.id})'>編集</button><button class='secondary' onclick='noop()'>-</button>`:kind==='liquid'?`<button class='primary' onclick='quickApply(${i.plant.id},"liquid","${i.label}")'>記録</button><button class='secondary' onclick='openPlantEdit(${i.plant.id})'>編集</button><button class='secondary' onclick='noop()'>-</button>`:`<button class='spray' onclick='quickApply(${i.plant.id},"spray","${i.label}")'>記録</button><button class='secondary' onclick='openPlantEdit(${i.plant.id})'>編集</button><button class='secondary' onclick='noop()'>-</button>`}</div></div>`).join('')}</div>`:`<div class='empty'>候補なし</div>`}</div>`}
+      $('todayContent').innerHTML=block('水',waterItems,'water')+block('液体処理',liquidItems,'liquid')+block('薬剤',sprayItems,'spray');
+    }
+
+    function renderBulk(){
+      const container=$('bulkGroupTags');container.innerHTML='';groups.forEach(g=>{const btn=document.createElement('button');btn.className='tag'+(bulkSelectedGroups.includes(g.id)?' active':'');btn.textContent=g.name;btn.onclick=()=>{bulkSelectedGroups=bulkSelectedGroups.includes(g.id)?bulkSelectedGroups.filter(x=>x!==g.id):[...bulkSelectedGroups,g.id];renderBulk()};container.appendChild(btn)});
+      $('bulkDate').value=judgeDate;
+      $('bulkLiquidSelect').innerHTML=liquidMasters.map(m=>`<option value='${m.id}'>${esc(m.name)}</option>`).join('');
+      $('bulkSpraySelect').innerHTML=sprayMasters.map(m=>`<option value='${m.id}'>${esc(m.name)} / ${esc(m.defaultDilution||'')}</option>`).join('');
+      const mode=$('bulkMode').value;$('bulkLiquidSelect').style.display=mode==='liquid'?'block':'none';$('bulkSpraySelect').style.display=mode==='spray'?'block':'none';
+    }
+
+    function renderHistory(){const q=$('historySearch').value.trim().toLowerCase(),type=$('historyTypeFilter').value,pf=$('historyPlantFilter').value;$('historyPlantFilter').innerHTML=`<option value='all'>株すべて</option>${plants.map(p=>`<option value='${p.id}'>${esc(p.name)}</option>`).join('')}`;const list=history.filter(h=>{const matchText=plantName(h.plantId).toLowerCase().includes(q)||String(h.label||'').toLowerCase().includes(q)||String(h.memo||'').toLowerCase().includes(q);const matchType=type==='all'||h.category===type;const matchPlant=pf==='all'||String(h.plantId)===pf;return matchText&&matchType&&matchPlant});$('historyContent').innerHTML=list.length?list.map(h=>`<div class='log-item'><div><div style='font-weight:700;'>${esc(plantName(h.plantId))}</div><div class='small'>${h.date} / ${esc(h.label)} / ${esc(h.memo||'')}</div></div><div class='log-actions'><span class='badge ${h.category==='spray'?'badge-spray':'badge-wait'}'>${h.category==='water'?'水':h.category==='liquid'?'液体処理':'薬剤'}</span><button class='secondary' onclick='openHistoryEdit(${JSON.stringify(h.id)})'>編集</button></div></div>`).join(''):`<div class='empty'>履歴なし</div>`}
+
+    function renderNewPlantDynamic(){
+      $('newPlantGroup').innerHTML=groups.map(g=>`<option value='${g.id}'>${esc(g.name)}</option>`).join('');
+      const gid=$('newPlantGroup').value||groups[0]?.id;
+      $('newWaterLast').value=judgeDate;
+      $('newWaterInterval').value=getGroupWaterDefault(gid);
+      $('newLiquidSettings').innerHTML=liquidMasters.map(m=>`<div class='add-grid'><div>${esc(m.name)}</div><input id='new-liquid-interval-${m.id}' type='number' value='${getGroupLiquidDefault(gid,m.id)}' placeholder='空き日数'><input id='new-liquid-last-${m.id}' type='date' value='${judgeDate}'></div>`).join('');
+      $('newSpraySettings').innerHTML=sprayMasters.map(m=>`<div class='add-grid'><div>${esc(m.name)}<div class='small'>初期倍率: ${esc(m.defaultDilution||'-')}</div></div><input id='new-spray-interval-${m.id}' type='number' value='${getGroupSprayDefault(gid,m.id)}' placeholder='空き日数'><input id='new-spray-last-${m.id}' type='date' value='${judgeDate}'></div>`).join('');
     }
 
     function renderPlants(){
-      const q = searchInput.value.trim().toLowerCase();
-      const filterGroup = groupFilter.value;
-      const dueOnly = dueOnlyCheck.checked;
-      let list = plants.filter(p => {
-        const inText = p.name.toLowerCase().includes(q) || String(p.rule || "").toLowerCase().includes(q) || String(p.note || "").toLowerCase().includes(q);
-        const inGroup = filterGroup === "all" ? true : p.group === filterGroup;
-        const inDue = dueOnly ? statusForPlant(p).dueIn <= 0 : true;
-        return inText && inGroup && inDue;
-      });
-      if (!list.length){
-        plantsContent.innerHTML = '<div class="empty">該当する株なし</div>';
-        return;
-      }
-      plantsContent.innerHTML = list.map(p => {
-        const st = statusForPlant(p);
-        return `
-          <div class="card list-card">
-            <div class="list-head">
-              <div>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-                  <div style="font-size:20px;font-weight:800;">${escapeHtml(p.name)}</div>
-                  <span class="badge badge-wait">${groupLabels[p.group]}</span>
-                  <span class="badge ${st.cls}">${st.label}</span>
-                </div>
-                <div class="rule">${escapeHtml(p.rule || "")}</div>
-                <div class="note">${escapeHtml(p.note || "")}</div>
-              </div>
-            </div>
-            <div class="meta" style="margin-top:12px;">
-              <div class="meta-box">前回<b>${p.lastWatered}</b></div>
-              <div class="meta-box">経過<b>${st.elapsed}日</b></div>
-              <div class="meta-box">今の空き日数<b style="margin-bottom:8px;">${p.interval}日</b><input type="number" value="${p.interval}" onchange="updateInterval(${p.id}, this.value)" /></div>
-              <div class="meta-box">次回目安<b>${addDays(p.lastWatered, p.interval)}</b></div>
-            </div>
-            <div class="plant-actions">
-              <button class="secondary" onclick="movePlant(${p.id}, 'up')">↑</button>
-              <button class="secondary" onclick="movePlant(${p.id}, 'down')">↓</button>
-              <select onchange="updateGroup(${p.id}, this.value)">${Object.entries(groupLabels).map(([key, label]) => `<option value="${key}" ${p.group===key?"selected":""}>${label}</option>`).join("")}</select>
-              <button class="primary" onclick="markPlant(${p.id}, '水')">水</button>
-              <button class="secondary" onclick="openPlantEdit(${p.id})">編集</button>
-              <button class="danger" onclick="deletePlant(${p.id})">削除</button>
-            </div>
-          </div>`;
-      }).join("");
+      $('plantGroupFilter').innerHTML=`<option value='all'>すべて</option>${groups.map(g=>`<option value='${g.id}'>${esc(g.name)}</option>`).join('')}`;
+      const q=$('plantSearch').value.trim().toLowerCase(),gf=$('plantGroupFilter').value,dueOnly=$('plantDueOnly').checked;
+      const list=plants.filter(p=>{const text=p.name.toLowerCase().includes(q)||String(p.note||'').toLowerCase().includes(q);const groupOk=gf==='all'||p.groupId===gf;const due=!dueOnly||status(p.water.last,p.water.interval,'水').dueIn<=0||liquidMasters.some(m=>status(p.liquid[m.id].last,p.liquid[m.id].interval,m.name).dueIn<=0)||sprayMasters.some(m=>status(p.spray[m.id].last,p.spray[m.id].interval,m.name).dueIn<=0);return text&&groupOk&&due});
+      $('plantsContent').innerHTML=list.length?list.map(p=>`<div class='card list-card'><div class='list-head'><div><div style='display:flex;flex-wrap:wrap;gap:8px;align-items:center;'><div style='font-size:20px;font-weight:800;'>${esc(p.name)}</div><span class='badge badge-wait'>${esc(groupName(p.groupId))}</span></div><div class='note'>${esc(p.note||'')}</div></div></div><div class='meta'><div class='meta-box'>水<b>${p.water.last}</b><input type='number' value='${p.water.interval}' onchange='updatePlantValue(${p.id},"waterInterval",this.value)'></div>${liquidMasters.map(m=>`<div class='meta-box'>${esc(m.name)}<b>${p.liquid[m.id].last}</b><input type='number' value='${p.liquid[m.id].interval}' onchange='updatePlantValue(${p.id},"liquid:${m.id}",this.value)'></div>`).join('')}${sprayMasters.map(m=>`<div class='meta-box'>${esc(m.name)}<b>${p.spray[m.id].last}</b><input type='number' value='${p.spray[m.id].interval}' onchange='updatePlantValue(${p.id},"spray:${m.id}",this.value)'></div>`).join('')}</div><div class='plant-actions'><button class='secondary' onclick='movePlant(${p.id},"up")'>↑</button><button class='secondary' onclick='movePlant(${p.id},"down")'>↓</button><select onchange='changePlantGroup(${p.id},this.value)'>${groups.map(g=>`<option value='${g.id}' ${p.groupId===g.id?'selected':''}>${esc(g.name)}</option>`).join('')}</select><button class='primary' onclick='quickApply(${p.id},"water")'>水</button><button class='secondary' onclick='openPlantEdit(${p.id})'>編集</button><button class='danger' onclick='deletePlant(${p.id})'>削除</button><button class='secondary' onclick='noop()'>-</button><button class='secondary' onclick='noop()'>-</button></div></div>`).join(''):`<div class='empty'>該当する株なし</div>`}
+      renderNewPlantDynamic();
     }
 
-    function renderWaterHistory(){
-      const q = waterHistorySearch.value.trim().toLowerCase();
-      const typeFilter = waterHistoryTypeFilter.value;
-      const plantFilter = waterHistoryPlantFilter.value;
-      const list = waterLogs.filter(log => {
-        const name = plantNameById(log.plantId).toLowerCase();
-        const inText = name.includes(q) || String(log.type || "").toLowerCase().includes(q) || String(log.memo || "").toLowerCase().includes(q);
-        const inType = typeFilter === "all" ? true : log.type === typeFilter;
-        const inPlant = plantFilter === "all" ? true : String(log.plantId) === plantFilter;
-        return inText && inType && inPlant;
-      });
-      if (!list.length){
-        waterHistoryContent.innerHTML = '<div class="empty">水履歴なし</div>';
-        return;
-      }
-      waterHistoryContent.innerHTML = list.map(log => `
-        <div class="log-item">
-          <div>
-            <div style="font-weight:700;">${escapeHtml(plantNameById(log.plantId))}</div>
-            <div class="small">${log.date} / ${escapeHtml(log.memo || '')}</div>
-          </div>
-          <div class="log-actions">
-            <span class="badge badge-wait">${escapeHtml(log.type)}</span>
-            <button class="secondary" onclick="openWaterLogEdit(${log.id})">編集</button>
-          </div>
-        </div>`).join("");
+    function renderSettings(){
+      $('groupSettingsList').innerHTML=groups.map(g=>`<div class='card'><div class='add-grid'><input value='${esc(g.name)}' onchange='renameGroup("${g.id}",this.value)'><input type='number' value='${getGroupWaterDefault(g.id)}' onchange='updateGroupWater("${g.id}",this.value)'><button class='danger' onclick='deleteGroup("${g.id}")'>削除</button></div><div class='small'>水の初期空き日数</div></div>`).join('');
+      $('liquidMasterList').innerHTML=liquidMasters.map(m=>`<div class='log-item'><div><div style='font-weight:700;'>${esc(m.name)}</div></div><div class='log-actions'><button class='danger' onclick='deleteLiquidMaster("${m.id}")'>削除</button></div></div>`).join('')||`<div class='empty'>液体処理なし</div>`;
+      $('sprayMasterList').innerHTML=sprayMasters.map(m=>`<div class='log-item'><div><div style='font-weight:700;'>${esc(m.name)}</div><div class='small'>初期倍率: ${esc(m.defaultDilution||'-')}</div></div><div class='log-actions'><button class='secondary' onclick='openSprayMasterEdit("${m.id}")'>編集</button><button class='danger' onclick='deleteSprayMaster("${m.id}")'>削除</button></div></div>`).join('')||`<div class='empty'>薬剤なし</div>`;
     }
 
-    function renderSprayHistory(){
-      const q = sprayHistorySearch.value.trim().toLowerCase();
-      const medicineFilter = sprayHistoryMedicineFilter.value.trim().toLowerCase();
-      const plantFilter = sprayHistoryPlantFilter.value;
-      const list = sprayLogs.filter(log => {
-        const name = plantNameById(log.plantId).toLowerCase();
-        const inText = name.includes(q) || String(log.medicine || "").toLowerCase().includes(q) || String(log.memo || "").toLowerCase().includes(q) || String(log.dilution || "").toLowerCase().includes(q);
-        const inMedicine = medicineFilter ? String(log.medicine || "").toLowerCase().includes(medicineFilter) : true;
-        const inPlant = plantFilter === "all" ? true : String(log.plantId) === plantFilter;
-        return inText && inMedicine && inPlant;
-      });
-      if (!list.length){
-        sprayHistoryContent.innerHTML = '<div class="empty">薬剤履歴なし</div>';
-        return;
-      }
-      sprayHistoryContent.innerHTML = list.map(log => `
-        <div class="log-item">
-          <div>
-            <div style="font-weight:700;">${escapeHtml(plantNameById(log.plantId))}</div>
-            <div class="small">${log.date} / ${escapeHtml(log.medicine || '')} / ${escapeHtml(log.dilution || '')}</div>
-            <div class="small">${escapeHtml(log.memo || '')}</div>
-          </div>
-          <div class="log-actions">
-            <span class="badge badge-spray">薬剤</span>
-            <button class="secondary" onclick="openSprayLogEdit(${log.id})">編集</button>
-          </div>
-        </div>`).join("");
-    }
+    function render(){plants.forEach(ensurePlantStructure);$('judgeDate').value=judgeDate;renderStats();renderToday();renderBulk();renderHistory();renderPlants();renderSettings()}
 
-    function renderGroups(){
-      let html = "";
-      Object.entries(groupLabels).forEach(([key, label]) => {
-        const items = plants.filter(p => p.group === key);
-        html += `<div class="card" style="margin-bottom:14px;"><div class="section-title">${label} <span class="small">(${items.length}株)</span></div>`;
-        if (!items.length){
-          html += `<div class="empty">登録なし</div>`;
-        } else {
-          items.forEach(p => {
-            const st = statusForPlant(p);
-            html += `<div class="log-item"><div><div style="font-weight:700;">${escapeHtml(p.name)}</div><div class="small">${escapeHtml(p.rule || "")}</div></div><span class="badge ${st.cls}">${st.label}</span></div>`;
-          });
-        }
-        html += `</div>`;
-      });
-      groupsContent.innerHTML = html;
-    }
+    function quickApply(plantId,mode,labelName){const plant=plants.find(p=>p.id===plantId);if(!plant)return;if(mode==='water')applyActionToPlant(plant,'water',null,judgeDate,'');if(mode==='liquid'){const master=liquidMasters.find(m=>m.name===labelName);if(master)applyActionToPlant(plant,'liquid',master.id,judgeDate,'')}if(mode==='spray'){const master=sprayMasters.find(m=>m.name===labelName);if(master)applyActionToPlant(plant,'spray',master.id,judgeDate,master.defaultDilution||'')}saveAll();render()}
+    function updatePlantValue(id,key,val){const p=plants.find(x=>x.id===id);if(!p)return;if(key==='waterInterval')p.water.interval=Number(val||0);if(key.startsWith('liquid:'))p.liquid[key.split(':')[1]].interval=Number(val||0);if(key.startsWith('spray:'))p.spray[key.split(':')[1]].interval=Number(val||0);saveAll();render()}
+    function changePlantGroup(id,gid){const p=plants.find(x=>x.id===id);if(!p)return;p.groupId=gid;saveAll();render()}
+    function movePlant(id,dir){const i=plants.findIndex(p=>p.id===id),j=dir==='up'?i-1:i+1;if(i<0||j<0||j>=plants.length)return;[plants[i],plants[j]]=[plants[j],plants[i]];saveAll();render()}
+    function deletePlant(id){if(!confirm('この株を削除する？'))return;plants=plants.filter(p=>p.id!==id);history=history.filter(h=>h.plantId!==id);saveAll();render()}
+    function addPlantFromForm(){const name=$('newPlantName').value.trim();if(!name)return alert('株名を入れて');const groupId=$('newPlantGroup').value;const plant={id:Date.now(),name,groupId,note:$('newPlantNote').value.trim(),water:{interval:Number($('newWaterInterval').value||getGroupWaterDefault(groupId)),last:$('newWaterLast').value||judgeDate},liquid:{},spray:{}};liquidMasters.forEach(m=>plant.liquid[m.id]={interval:Number($("new-liquid-interval-"+m.id).value||getGroupLiquidDefault(groupId,m.id)),last:$("new-liquid-last-"+m.id).value||judgeDate});sprayMasters.forEach(m=>plant.spray[m.id]={interval:Number($("new-spray-interval-"+m.id).value||getGroupSprayDefault(groupId,m.id)),last:$("new-spray-last-"+m.id).value||judgeDate});plants.push(plant);$('newPlantName').value='';$('newPlantNote').value='';saveAll();render()}
+    function renameGroup(id,name){const g=groups.find(x=>x.id===id);if(!g)return;g.name=name.trim()||g.name;saveAll();render()}
+    function updateGroupWater(id,val){groupSettings[id]=groupSettings[id]||{water:7,liquid:{},spray:{}};groupSettings[id].water=Number(val||0);saveAll();render()}
+    function addGroup(){const name=$('newGroupName').value.trim();if(!name)return;const id=name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now();groups.push({id,name});groupSettings[id]={water:7,liquid:{},spray:{}};$('newGroupName').value='';saveAll();render()}
+    function deleteGroup(id){if(groups.length<=1)return alert('最低1つは必要');const target=groups.find(g=>g.id===id);if(!target)return;openModal('グループ削除',`<div class='stack'><div>${esc(target.name)} を削除します。所属株の移動先を選んでください。</div><select id='moveGroupTarget'>${groups.filter(g=>g.id!==id).map(g=>`<option value='${g.id}'>${esc(g.name)}</option>`).join('')}</select><div class='footer-actions'><button class='secondary' onclick='closeModal()'>キャンセル</button><button class='danger' onclick='confirmDeleteGroup("${id}")'>削除する</button></div></div>`)}
+    function confirmDeleteGroup(id){const to=$('moveGroupTarget').value;plants.forEach(p=>{if(p.groupId===id)p.groupId=to});groups=groups.filter(g=>g.id!==id);delete groupSettings[id];saveAll();closeModal();render()}
+    function addLiquidMaster(){const name=$('newLiquidName').value.trim();if(!name)return;const id=name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now();liquidMasters.push({id,name});groups.forEach(g=>{groupSettings[g.id]=groupSettings[g.id]||{water:7,liquid:{},spray:{}};groupSettings[g.id].liquid[id]=14});plants.forEach(p=>p.liquid[id]={interval:14,last:judgeDate});$('newLiquidName').value='';saveAll();render()}
+    function deleteLiquidMaster(id){if(!confirm('この液体処理を削除する？'))return;liquidMasters=liquidMasters.filter(m=>m.id!==id);plants.forEach(p=>delete p.liquid[id]);groups.forEach(g=>{if(groupSettings[g.id]?.liquid) delete groupSettings[g.id].liquid[id]});saveAll();render()}
+    function addSprayMaster(){const name=$('newSprayName').value.trim();if(!name)return;const id=name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now();const defaultDilution=$('newSprayDefaultDilution').value.trim();sprayMasters.push({id,name,defaultDilution});groups.forEach(g=>{groupSettings[g.id]=groupSettings[g.id]||{water:7,liquid:{},spray:{}};groupSettings[g.id].spray[id]=30});plants.forEach(p=>p.spray[id]={interval:30,last:judgeDate});$('newSprayName').value='';$('newSprayDefaultDilution').value='';saveAll();render()}
+    function openSprayMasterEdit(id){const m=sprayMasters.find(x=>x.id===id);if(!m)return;openModal('薬剤編集',`<div class='modal-grid'><div><label>薬剤名</label><input id='editSprayName' value='${esc(m.name)}'></div><div><label>初期倍率</label><input id='editSprayDilution' value='${esc(m.defaultDilution||'')}'></div></div><div class='footer-actions'><button class='secondary' onclick='closeModal()'>キャンセル</button><button class='primary' onclick='saveSprayMasterEdit("${id}")'>保存</button></div>`)}
+    function saveSprayMasterEdit(id){const m=sprayMasters.find(x=>x.id===id);if(!m)return;m.name=$('editSprayName').value.trim()||m.name;m.defaultDilution=$('editSprayDilution').value.trim();saveAll();closeModal();render()}
+    function deleteSprayMaster(id){if(!confirm('この薬剤を削除する？'))return;sprayMasters=sprayMasters.filter(m=>m.id!==id);plants.forEach(p=>delete p.spray[id]);groups.forEach(g=>{if(groupSettings[g.id]?.spray) delete groupSettings[g.id].spray[id]});saveAll();render()}
+    function openPlantEdit(id){const p=plants.find(x=>x.id===id);if(!p)return;openModal('株編集',`<div class='modal-grid'><div><label>株名</label><input id='editPlantName' value='${esc(p.name)}'></div><div><label>グループ</label><select id='editPlantGroup'>${groups.map(g=>`<option value='${g.id}' ${p.groupId===g.id?'selected':''}>${esc(g.name)}</option>`).join('')}</select></div><div><label>水の空き日数</label><input id='editWaterInterval' type='number' value='${p.water.interval}'></div><div><label>最終水日</label><input id='editWaterLast' type='date' value='${p.water.last}'></div></div><div class='divider'></div><div class='section-title' style='font-size:18px;'>液体処理</div>${liquidMasters.map(m=>`<div class='modal-grid'><div><label>${esc(m.name)} 空き日数</label><input id='edit-liquid-int-${m.id}' type='number' value='${p.liquid[m.id].interval}'></div><div><label>${esc(m.name)} 最終日</label><input id='edit-liquid-last-${m.id}' type='date' value='${p.liquid[m.id].last}'></div></div>`).join('')}<div class='divider'></div><div class='section-title' style='font-size:18px;'>薬剤</div>${sprayMasters.map(m=>`<div class='modal-grid'><div><label>${esc(m.name)} 空き日数</label><input id='edit-spray-int-${m.id}' type='number' value='${p.spray[m.id].interval}'></div><div><label>${esc(m.name)} 最終日</label><input id='edit-spray-last-${m.id}' type='date' value='${p.spray[m.id].last}'></div></div>`).join('')}<div><label>メモ</label><textarea id='editPlantNote'>${esc(p.note||'')}</textarea></div><div class='footer-actions'><button class='secondary' onclick='closeModal()'>キャンセル</button><button class='primary' onclick='savePlantEdit(${id})'>保存</button></div>`)}
+    function savePlantEdit(id){const p=plants.find(x=>x.id===id);if(!p)return;p.name=$('editPlantName').value.trim()||p.name;p.groupId=$('editPlantGroup').value;p.water.interval=Number($('editWaterInterval').value||p.water.interval);p.water.last=$('editWaterLast').value||p.water.last;liquidMasters.forEach(m=>{p.liquid[m.id].interval=Number($("edit-liquid-int-"+m.id).value||p.liquid[m.id].interval);p.liquid[m.id].last=$("edit-liquid-last-"+m.id).value||p.liquid[m.id].last});sprayMasters.forEach(m=>{p.spray[m.id].interval=Number($("edit-spray-int-"+m.id).value||p.spray[m.id].interval);p.spray[m.id].last=$("edit-spray-last-"+m.id).value||p.spray[m.id].last});p.note=$('editPlantNote').value.trim();saveAll();closeModal();render()}
+    function openHistoryEdit(id){const h=history.find(x=>x.id===id);if(!h)return;openModal('履歴編集',`<div class='modal-grid'><div><label>日付</label><input id='editHistoryDate' type='date' value='${h.date}'></div><div><label>株</label><select id='editHistoryPlant'>${plants.map(p=>`<option value='${p.id}' ${p.id===h.plantId?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div><div><label>ラベル</label><input id='editHistoryLabel' value='${esc(h.label)}'></div><div><label>メモ</label><input id='editHistoryMemo' value='${esc(h.memo||'')}'></div></div><div class='footer-actions'><button class='danger' onclick='deleteHistory(${JSON.stringify(id)})'>削除</button><button class='secondary' onclick='closeModal()'>キャンセル</button><button class='primary' onclick='saveHistoryEdit(${JSON.stringify(id)})'>保存</button></div>`)}
+    function saveHistoryEdit(id){const h=history.find(x=>x.id===id);if(!h)return;h.date=$('editHistoryDate').value||h.date;h.plantId=Number($('editHistoryPlant').value);h.label=$('editHistoryLabel').value.trim()||h.label;h.memo=$('editHistoryMemo').value.trim();saveAll();closeModal();render()}
+    function deleteHistory(id){if(!confirm('この履歴を削除する？'))return;history=history.filter(h=>h.id!==id);saveAll();closeModal();render()}
+    function previewBulk(){if(!bulkSelectedGroups.length)return alert('グループを選択して');const mode=$('bulkMode').value;const selectedId=mode==='liquid'?$('bulkLiquidSelect').value:mode==='spray'?$('bulkSpraySelect').value:null;const date=$('bulkDate').value||judgeDate;const memo=$('bulkMemo').value.trim();let targets=plants.filter(p=>bulkSelectedGroups.includes(p.groupId));if(!targets.length)return alert('対象株なし');openModal('一括入力の確認',`<div class='stack'><div>対象グループ: ${bulkSelectedGroups.map(groupName).map(esc).join(' / ')}</div><div>処理: ${mode==='water'?'水':mode==='liquid'?'液体処理':'薬剤'} ${mode==='liquid'?(liquidMasters.find(x=>x.id===selectedId)?.name||''):mode==='spray'?(sprayMasters.find(x=>x.id===selectedId)?.name||''):''}</div><div>日付: ${date}</div><div>メモ: ${esc(memo||'-')}</div><div class='small'>外したい株はチェックを外してから実行</div><div class='check-list'>${targets.map(p=>`<label class='check-item' id='target-row-${p.id}'><input type='checkbox' class='bulk-target-check' value='${p.id}' checked onchange='toggleTargetRow(${p.id}, this.checked)' style='width:auto'><span>${esc(p.name)} <span class='small'>(${esc(groupName(p.groupId))})</span></span></label>`).join('')}</div><div class='footer-actions'><button class='secondary' onclick='closeModal()'>キャンセル</button><button class='primary' onclick='confirmBulk("${mode}",${JSON.stringify(selectedId)},"${date}",${JSON.stringify(memo)})'>実行</button></div></div>`)}
+    function toggleTargetRow(id,checked){const row=$('target-row-'+id);if(row) row.classList.toggle('off',!checked)}
+    function confirmBulk(mode,selectedId,date,memo){const ids=[...document.querySelectorAll('.bulk-target-check:checked')].map(el=>Number(el.value));ids.forEach(id=>{const p=plants.find(x=>x.id===id);if(p) applyActionToPlant(p,mode,selectedId,date,memo)});saveAll();closeModal();render()}
+    function noop(){}
 
-    function renderStats(){
-      const dueToday = plants.filter(p => statusForPlant(p).dueIn <= 0).length;
-      const soon = plants.filter(p => statusForPlant(p).dueIn === 1).length;
-      statDue.textContent = dueToday;
-      statSoon.textContent = soon;
-      statCount.textContent = plants.length;
-      statLogs.textContent = waterLogs.length + sprayLogs.length;
-    }
-
-    function render(){
-      buildGroupOptions(newGroup, false);
-      buildGroupOptions(groupFilter, true);
-      buildSelectOptions(waterHistoryPlantFilter, true, "株すべて");
-      buildSelectOptions(sprayPlant, false);
-      buildSelectOptions(sprayHistoryPlantFilter, true, "株すべて");
-      sprayDate.value = judgeDate;
-      renderStats();
-      renderToday();
-      renderPlants();
-      renderWaterHistory();
-      renderSprayHistory();
-      renderGroups();
-    }
-
-    tabs.forEach(btn => {
-      btn.addEventListener("click", () => {
-        tabs.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        Object.values(sections).forEach(sec => sec.classList.add("hidden"));
-        sections[btn.dataset.tab].classList.remove("hidden");
-      });
-    });
-
-    judgeDateInput.value = judgeDate;
-    judgeDateInput.addEventListener("change", e => {
-      judgeDate = e.target.value;
-      saveData();
-      render();
-    });
-
-    document.getElementById("waterAllBtn").addEventListener("click", () => markAllDue("水"));
-    document.getElementById("hbAllBtn").addEventListener("click", () => markAllDue("HB"));
-    document.getElementById("rdAllBtn").addEventListener("click", () => markAllDue("RD"));
-    document.getElementById("addPlantBtn").addEventListener("click", addPlant);
-    document.getElementById("addSprayBtn").addEventListener("click", addSprayLog);
-    document.getElementById("clearSearchBtn").addEventListener("click", () => {
-      searchInput.value = "";
-      groupFilter.value = "all";
-      dueOnlyCheck.checked = false;
-      render();
-    });
-    document.getElementById("waterHistoryClearBtn").addEventListener("click", () => {
-      waterHistorySearch.value = "";
-      waterHistoryTypeFilter.value = "all";
-      waterHistoryPlantFilter.value = "all";
-      render();
-    });
-    document.getElementById("sprayHistoryClearBtn").addEventListener("click", () => {
-      sprayHistorySearch.value = "";
-      sprayHistoryMedicineFilter.value = "";
-      sprayHistoryPlantFilter.value = "all";
-      render();
-    });
-
-    [searchInput, groupFilter, dueOnlyCheck, waterHistorySearch, waterHistoryTypeFilter, waterHistoryPlantFilter, sprayHistorySearch, sprayHistoryMedicineFilter, sprayHistoryPlantFilter].forEach(el => {
-      el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', render);
-      if (el.tagName === 'SELECT') el.addEventListener('change', render);
-    });
-
-    closeModalBtn.addEventListener("click", closeModal);
-    modalWrap.addEventListener("click", (e) => { if (e.target === modalWrap) closeModal(); });
-
+    tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(b=>b.classList.remove('active'));btn.classList.add('active');Object.values(sections).forEach(sec=>sec.classList.add('hidden'));sections[btn.dataset.tab].classList.remove('hidden')}));
+    $('judgeDate').addEventListener('change',e=>{judgeDate=e.target.value;saveAll();render()});$('bulkMode').addEventListener('change',renderBulk);$('bulkPreviewBtn').addEventListener('click',previewBulk);$('addPlantBtn').addEventListener('click',addPlantFromForm);$('addGroupBtn').addEventListener('click',addGroup);$('addLiquidBtn').addEventListener('click',addLiquidMaster);$('addSprayMasterBtn').addEventListener('click',addSprayMaster);$('closeModalBtn').addEventListener('click',closeModal);$('modalWrap').addEventListener('click',e=>{if(e.target===$('modalWrap'))closeModal()});$('clearHistoryBtn').addEventListener('click',()=>{$('historySearch').value='';$('historyTypeFilter').value='all';$('historyPlantFilter').value='all';render()});$('clearPlantFilterBtn').addEventListener('click',()=>{$('plantSearch').value='';$('plantGroupFilter').value='all';$('plantDueOnly').checked=false;render()});['historySearch','historyTypeFilter','historyPlantFilter','plantSearch','plantGroupFilter','plantDueOnly','newPlantGroup'].forEach(id=>$(id).addEventListener($(id).tagName==='SELECT'||$(id).type==='checkbox'?'change':'input',render));
+    window.quickApply=quickApply;window.updatePlantValue=updatePlantValue;window.changePlantGroup=changePlantGroup;window.movePlant=movePlant;window.deletePlant=deletePlant;window.renameGroup=renameGroup;window.updateGroupWater=updateGroupWater;window.deleteGroup=deleteGroup;window.confirmDeleteGroup=confirmDeleteGroup;window.deleteLiquidMaster=deleteLiquidMaster;window.openSprayMasterEdit=openSprayMasterEdit;window.saveSprayMasterEdit=saveSprayMasterEdit;window.deleteSprayMaster=deleteSprayMaster;window.openPlantEdit=openPlantEdit;window.savePlantEdit=savePlantEdit;window.openHistoryEdit=openHistoryEdit;window.saveHistoryEdit=saveHistoryEdit;window.deleteHistory=deleteHistory;window.closeModal=closeModal;window.toggleTargetRow=toggleTargetRow;window.confirmBulk=confirmBulk;window.noop=noop;
     render();
-
-    // グローバル公開
-    window.markPlant = markPlant;
-    window.movePlant = movePlant;
-    window.deletePlant = deletePlant;
-    window.updateInterval = updateInterval;
-    window.updateGroup = updateGroup;
-    window.openPlantEdit = openPlantEdit;
-    window.savePlantEdit = savePlantEdit;
-    window.openWaterLogEdit = openWaterLogEdit;
-    window.saveWaterLogEdit = saveWaterLogEdit;
-    window.deleteWaterLog = deleteWaterLog;
-    window.openSprayLogEdit = openSprayLogEdit;
-    window.saveSprayLogEdit = saveSprayLogEdit;
-    window.deleteSprayLog = deleteSprayLog;
-    window.closeModal = closeModal;
   </script>
 </body>
 </html>
